@@ -34,7 +34,7 @@ sistema.
 
 ### 2. Back-end (Java puro)
 
-Criar arquivo `backend/config.properties`:
+Criar arquivo `backend/com.focuswave.config.properties`:
 
     db.url=jdbc:mysql://localhost:3306/focuswave
     db.user=root

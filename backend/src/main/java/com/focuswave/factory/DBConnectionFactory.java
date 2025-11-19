@@ -1,4 +1,4 @@
-package factory;
+package com.focuswave.factory;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -21,11 +21,17 @@ public class DBConnectionFactory {
     public static final String SENHA = dotenv.get("DB_PASS"); // Insira a senha na variável de ambiente
 
     public static Connection getConnection() throws SQLException {
-        Connection connection = DriverManager.getConnection(URL, USUARIO, SENHA);
+        Connection conexao = DriverManager.getConnection(URL, USUARIO, SENHA);
 
-        try (Statement statement = connection.createStatement()) {
+        try (Statement statement = conexao.createStatement()) {
             statement.execute("ALTER SESSION SET CURRENT_SCHEMA=" + USUARIO);
         }
-        return connection;
+        return conexao;
+    }
+
+    public static void main (String[] args) {
+        System.out.println(URL);
+        System.out.println(USUARIO);
+        System.out.println(SENHA);
     }
 }
