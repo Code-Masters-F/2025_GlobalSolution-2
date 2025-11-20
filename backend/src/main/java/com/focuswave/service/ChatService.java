@@ -1,81 +1,79 @@
 package com.focuswave.service;
 
+import com.focuswave.dao.MusicDAO;
+import com.focuswave.dto.MusicDTO;
 import com.focuswave.dto.MusicSuggestionDTO;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ChatService {
 
-    public List<MusicSuggestionDTO> getSuggestions(String goal) {
+    private MusicDAO musicDAO = new MusicDAO();
 
-        if (goal == null || goal.isEmpty()) {
+    public List<MusicSuggestionDTO> getSuggestions(String goal, Integer lastMusicId) {
+
+        // Validação básica
+        if (goal == null || goal.trim().isEmpty()) {
             return new ArrayList<>();
         }
 
-        // Normaliza o texto para evitar problemas com maiúsculas/minúsculas
         String normalized = goal.trim().toLowerCase();
 
+        // Identifica intenção principal
+        String intent = detectIntent(normalized);
+
+        // Busca músicas do banco correspondentes à intenção
+        List<MusicDTO> all = musicDAO.findByGoal(intent);
+
+        // Embaralhar para dar variedade
+        Collections.shuffle(all);
+
+        // Evitar repetir a música anterior
+        if (lastMusicId != null && !all.isEmpty()) {
+            all.removeIf(m -> m.getId() == lastMusicId);
+        }
+
+        // Se a lista ficou vazia após remoção → recarrega
+        if (all.isEmpty()) {
+            all = musicDAO.findByGoal(intent);
+            Collections.shuffle(all);
+        }
+
+        // Converter MusicDTO → MusicSuggestionDTO
         List<MusicSuggestionDTO> suggestions = new ArrayList<>();
 
-        // Lógica simples do MVP — baseada em palavras-chave
-        if (normalized.contains("foco") || normalized.contains("focus") || normalized.contains("estudar")) {
-
+        for (MusicDTO m : all) {
             suggestions.add(new MusicSuggestionDTO(
-                    1,
-                    "Deep Focus 432hz",
-                    "Música binaural ideal para concentração.",
-                    "https://yourmusicurl.com/focus1",
-                    "focus"
-            ));
-
-            suggestions.add(new MusicSuggestionDTO(
-                    2,
-                    "Alpha Waves",
-                    "Ondas binaurais alfa para produtividade.",
-                    "https://yourmusicurl.com/focus2",
-                    "focus"
-            ));
-        }
-        else if (normalized.contains("relax") || normalized.contains("descansar")) {
-
-            suggestions.add(new MusicSuggestionDTO(
-                    3,
-                    "Calm Ocean",
-                    "Som de mar com frequência relaxante.",
-                    "https://yourmusicurl.com/relax1",
-                    "relax"
-            ));
-
-            suggestions.add(new MusicSuggestionDTO(
-                    4,
-                    "Deep Breathing Waves",
-                    "Binaural suave para reduzir ansiedade.",
-                    "https://yourmusicurl.com/relax2",
-                    "relax"
-            ));
-        }
-        else if (normalized.contains("dormir") || normalized.contains("sono") || normalized.contains("sleep")) {
-
-            suggestions.add(new MusicSuggestionDTO(
-                    5,
-                    "Delta Sleep 528hz",
-                    "Música binaural para indução ao sono.",
-                    "https://yourmusicurl.com/sleep1",
-                    "sleep"
-            ));
-        }
-        else {
-            // fallback padrão caso a intenção não seja reconhecida
-            suggestions.add(new MusicSuggestionDTO(
-                    99,
-                    "Binaural Genérico",
-                    "Música neutra para foco ou relaxamento leve.",
-                    "https://yourmusicurl.com/default",
-                    "neutral"
+                    m.getId(),
+                    m.getTitle(),
+                    m.getDescription(),
+                    m.getUrl(),
+                    m.getCategory()
             ));
         }
 
         return suggestions;
+    }
+
+    /**
+     * Detecta a intenção baseada no texto enviado pelo usuário
+     */
+    private String detectIntent(String text) {
+
+        if (text.contains("foco") || text.contains("focus") || text.contains("estudar")) {
+            return "focus";
+        }
+
+        if (text.contains("relax") || text.contains("descansar") || text.contains("calmar") || text.contains("acalmar")) {
+            return "relax";
+        }
+
+        if (text.contains("sono") || text.contains("dormir") || text.contains("sleep")) {
+            return "sleep";
+        }
+
+        return "neutral";
     }
 }
