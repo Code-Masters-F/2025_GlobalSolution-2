@@ -1,0 +1,49 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.1.0">
+  <diagram name="Página-1" id="OgZlg0iCq3OM4ivlSIxS">
+    <mxGraphModel dx="1148" dy="689" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="rovZQYvYCaeYRsbOsK3p-1" parent="1" style="whiteSpace=wrap;html=1;align=center;" value="Perfil-Usuário" vertex="1">
+          <mxGeometry height="40" width="100" x="152" y="196" as="geometry" />
+        </mxCell>
+        <mxCell id="rovZQYvYCaeYRsbOsK3p-2" parent="1" style="whiteSpace=wrap;html=1;align=center;" value="Configuracoes&lt;div&gt;Pomodoro&lt;/div&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="570" y="196" as="geometry" />
+        </mxCell>
+        <mxCell id="rovZQYvYCaeYRsbOsK3p-3" parent="1" style="shape=rhombus;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" value="Possui" vertex="1">
+          <mxGeometry height="60" width="120" x="362" y="186" as="geometry" />
+        </mxCell>
+        <mxCell id="rovZQYvYCaeYRsbOsK3p-6" edge="1" parent="1" source="rovZQYvYCaeYRsbOsK3p-1" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="rovZQYvYCaeYRsbOsK3p-3" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="303" y="385" as="sourcePoint" />
+            <mxPoint x="463" y="385" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rovZQYvYCaeYRsbOsK3p-7" connectable="0" parent="rovZQYvYCaeYRsbOsK3p-6" style="resizable=0;html=1;whiteSpace=wrap;align=left;verticalAlign=bottom;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-1" as="geometry" />
+        </mxCell>
+        <mxCell id="rovZQYvYCaeYRsbOsK3p-8" connectable="0" parent="rovZQYvYCaeYRsbOsK3p-6" style="resizable=0;html=1;whiteSpace=wrap;align=right;verticalAlign=bottom;" value="1" vertex="1">
+          <mxGeometry relative="1" x="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rovZQYvYCaeYRsbOsK3p-9" edge="1" parent="1" source="rovZQYvYCaeYRsbOsK3p-3" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="rovZQYvYCaeYRsbOsK3p-2" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="303" y="385" as="sourcePoint" />
+            <mxPoint x="463" y="385" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rovZQYvYCaeYRsbOsK3p-10" connectable="0" parent="rovZQYvYCaeYRsbOsK3p-9" style="resizable=0;html=1;whiteSpace=wrap;align=left;verticalAlign=bottom;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-1" as="geometry" />
+        </mxCell>
+        <mxCell id="rovZQYvYCaeYRsbOsK3p-11" connectable="0" parent="rovZQYvYCaeYRsbOsK3p-9" style="resizable=0;html=1;whiteSpace=wrap;align=right;verticalAlign=bottom;" value="1" vertex="1">
+          <mxGeometry relative="1" x="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rovZQYvYCaeYRsbOsK3p-12" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Senha;&lt;br&gt;Email;&lt;br&gt;Dados do usuário" vertex="1">
+          <mxGeometry height="30" width="60" x="162" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="rovZQYvYCaeYRsbOsK3p-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Tempo do timer;&lt;br&gt;Nome da playlist;&lt;br&gt;Configurações personalisadas do funcionamento do sistema" vertex="1">
+          <mxGeometry height="85" width="109" x="565.5" y="83" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
