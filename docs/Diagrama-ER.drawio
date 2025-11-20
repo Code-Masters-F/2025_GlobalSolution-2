@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.1.0">
   <diagram name="Página-1" id="OgZlg0iCq3OM4ivlSIxS">
-    <mxGraphModel dx="1721" dy="1034" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1197" dy="719" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -67,6 +67,9 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0jFxFNMv52Ccr337pWE4-20" edge="1" parent="1" source="0jFxFNMv52Ccr337pWE4-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;endFill=0;" target="0jFxFNMv52Ccr337pWE4-37">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0jFxFNMv52Ccr337pWE4-43" edge="1" parent="1" source="0jFxFNMv52Ccr337pWE4-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="0jFxFNMv52Ccr337pWE4-42">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0jFxFNMv52Ccr337pWE4-21" parent="1" style="whiteSpace=wrap;html=1;align=center;" value="Histórico de Músicas" vertex="1">
@@ -145,6 +148,9 @@
         </mxCell>
         <mxCell id="0jFxFNMv52Ccr337pWE4-41" parent="1" style="ellipse;whiteSpace=wrap;html=1;align=center;" value="data escutada" vertex="1">
           <mxGeometry height="40" width="100" x="863" y="507" as="geometry" />
+        </mxCell>
+        <mxCell id="0jFxFNMv52Ccr337pWE4-42" parent="1" style="ellipse;whiteSpace=wrap;html=1;align=center;fontStyle=4;" value="ID_Histórico" vertex="1">
+          <mxGeometry height="40" width="100" x="768" y="295" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
