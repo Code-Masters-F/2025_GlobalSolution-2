@@ -1,0 +1,34 @@
+/* Mobile Layout (< 768px) */
+@media (max-width: 768px) {
+  .status-bar {
+    padding: 0 var(--spacing-md);
+  }
+
+  .status-bar__brand span {
+    display: none;
+  }
+
+  .timer-status {
+    display: none;
+  }
+
+  .main-layout {
+    flex-direction: column;
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .player-sidebar {
+    display: none;
+    /* Hide player on mobile for now, or convert to bottom bar */
+  }
+
+  .chat-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .modal__content {
+    width: 95%;
+    padding: var(--spacing-md);
+  }
+}
