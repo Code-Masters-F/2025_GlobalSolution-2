@@ -50,68 +50,68 @@ VALUES ('Rolling in the Deep', 'Adele - 21', 'Pop', 'https://www.youtube.com/wat
 -- SYSDATE - 1 significa "ontem". SYSDATE - (1/24) significa "1 hora atrás".
 
 -- Usuário 1 (Lucas)
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (1, 1, SYSTIMESTAMP - INTERVAL '5' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (1, 4, SYSTIMESTAMP - INTERVAL '4' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (1, 5, SYSTIMESTAMP - INTERVAL '4' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (1, 9, SYSTIMESTAMP - INTERVAL '3' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (1, 1, SYSTIMESTAMP - INTERVAL '1' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (1, 5, SYSTIMESTAMP - INTERVAL '1' HOUR);
 -- Nirvana (agora pouco)
 
 -- Usuário 2 (Mariana)
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (2, 2, SYSTIMESTAMP - INTERVAL '10' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (2, 6, SYSTIMESTAMP - INTERVAL '9' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (2, 10, SYSTIMESTAMP - INTERVAL '8' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (2, 3, SYSTIMESTAMP - INTERVAL '2' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (2, 7, SYSTIMESTAMP - INTERVAL '1' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (2, 2, SYSTIMESTAMP - INTERVAL '5' HOUR);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (2, 10, SYSTIMESTAMP - INTERVAL '2' HOUR);
 -- Adele (de novo)
 
 -- Usuário 3 (Pedro)
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (3, 8, SYSTIMESTAMP - INTERVAL '20' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (3, 1, SYSTIMESTAMP - INTERVAL '15' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (3, 3, SYSTIMESTAMP - INTERVAL '12' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (3, 9, SYSTIMESTAMP - INTERVAL '5' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (3, 6, SYSTIMESTAMP - INTERVAL '3' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (3, 8, SYSTIMESTAMP - INTERVAL '1' DAY);
 
-INSERT INTO FW_HISTORICO_MUSICAS (id_user_profile, id_music, played_at)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
 VALUES (3, 7, SYSTIMESTAMP);
 -- Chico Buarque (agora)
 
