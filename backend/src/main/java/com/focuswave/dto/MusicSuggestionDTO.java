@@ -1,13 +1,17 @@
-package com.focuswave.model;
+package com.focuswave.dto;
 
-public class Music {
-    private Integer id;
+public class MusicSuggestionDTO {
+    private int id;
     private String title;
     private String description;
     private String url;
     private String category;
 
-    public Music(int id, String title, String description, String url, String category) {
+    public MusicSuggestionDTO() {
+
+    }
+
+    public MusicSuggestionDTO(int id, String title, String description, String url, String category) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -15,11 +19,11 @@ public class Music {
         this.category = category;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -54,10 +58,5 @@ public class Music {
     public void setCategory(String category) {
         this.category = category;
     }
-
-
-
-
-
 
 }
