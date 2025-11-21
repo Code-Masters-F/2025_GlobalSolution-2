@@ -83,6 +83,29 @@ class PlayerController {
       this.playBtn.classList.toggle('playing', this.isPlaying);
     }
   }
+
+  loadTrack(track) {
+    // Check if track is already in the list
+    let index = this.tracks.findIndex(t => t.title === track.title);
+
+    if (index === -1) {
+      // Add to tracks if not present
+      this.tracks.push(track);
+      index = this.tracks.length - 1;
+    }
+
+    this.currentTrackIndex = index;
+    this.updateDisplay();
+
+    if (!this.isPlaying) {
+      this.togglePlay();
+    } else {
+      // If already playing, just ensure history is updated if needed
+      if (window.HistorySystem) {
+        window.HistorySystem.addToHistory(track);
+      }
+    }
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
