@@ -40,17 +40,18 @@ class PlayerController {
     this.updateControls();
 
     // Update icon
-    const icon = this.playBtn.querySelector('i') || this.playBtn.querySelector('svg');
-    if (icon) {
-      // If using Lucide, we might need to replace the element or update attribute
-      // For simplicity, we'll just toggle the lucide data attribute and re-render if possible
-      // But since Lucide replaces the <i> tag with an <svg>, we need to handle that.
-      // A simpler way is to just change innerHTML
+    if (this.playBtn) {
       this.playBtn.innerHTML = this.isPlaying
         ? '<i data-lucide="pause"></i>'
         : '<i data-lucide="play"></i>';
 
       if (window.lucide) lucide.createIcons();
+    }
+
+    // Add to history if playing
+    if (this.isPlaying && window.HistorySystem) {
+      const currentTrack = this.tracks[this.currentTrackIndex];
+      window.HistorySystem.addToHistory(currentTrack);
     }
   }
 

@@ -3,7 +3,7 @@
  * Sistema de histórico de músicas tocadas
  */
 
-(function() {
+(function () {
   'use strict';
 
   const HistorySystem = {
@@ -20,9 +20,9 @@
     /**
      * Inicializa o sistema de histórico
      */
-    init() {
+    async init() {
       this.cacheElements();
-      this.loadFromStorage();
+      await this.loadHistory();
       this.attachEventListeners();
       this.render();
       console.log('📜 History System initialized');
@@ -50,28 +50,29 @@
     },
 
     /**
+     * Carrega histórico do serviço
+     */
+    async loadHistory() {
+      if (window.HistoryService) {
+        this.history = await window.HistoryService.getHistory();
+      }
+    },
+
+    /**
      * Adiciona música ao histórico
      * @param {Object} music - Objeto da música
      */
-    addToHistory(music) {
-      const entry = {
-        ...music,
-        playedAt: Date.now(),
-        id: `${music.id}-${Date.now()}`
-      };
-
-      // Adicionar no início
-      this.history.unshift(entry);
-
-      // Limitar a 50 itens
-      if (this.history.length > 50) {
-        this.history = this.history.slice(0, 50);
+    async addToHistory(music) {
+      if (window.HistoryService) {
+        const entry = await window.HistoryService.addToHistory(music);
+        if (entry) {
+          // Atualiza lista local para renderização imediata (otimista) ou recarrega
+          // Vamos recarregar para garantir sincronia
+          await this.loadHistory();
+          this.render();
+          console.log(`📜 Added to history: ${music.title}`);
+        }
       }
-
-      this.saveToStorage();
-      this.render();
-
-      console.log(`📜 Added to history: ${music.title}`);
     },
 
     /**
@@ -86,6 +87,8 @@
      * Renderiza preview (primeiras 3 músicas)
      */
     renderPreview() {
+      if (!this.elements.preview) return;
+
       const preview = this.history.slice(0, this.maxPreviewItems);
 
       if (preview.length === 0) {
@@ -135,14 +138,11 @@
 
       return `
         <div class="history-item" data-music-id="${item.id}">
-          <span class="history-item__icon">${item.icon || '🎵'}</span>
-          <div class="history-item__info">
-            <div class="history-item__title">${item.title}</div>
-            <div class="history-item__time">${timeAgo}</div>
+          <div class="history-info">
+            <span class="track-name">${item.title}</span>
+            <span class="track-artist">${item.description || 'Desconhecido'}</span>
           </div>
-          <button class="history-item__play" data-play-history="${item.id}">
-            <span>▶️</span>
-          </button>
+          <span class="track-time">${timeAgo}</span>
         </div>
       `;
     },
@@ -151,28 +151,27 @@
      * Anexa listeners aos itens
      */
     attachItemListeners() {
-      // Botões de play
-      document.querySelectorAll('[data-play-history]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const musicId = btn.dataset.playHistory;
-          const music = this.history.find(m => m.id === musicId);
-
-          if (music && window.PlayerSystem) {
-            window.PlayerSystem.loadMusic(music);
-            window.PlayerSystem.play();
-          }
-        });
-      });
-
-      // Clique no item inteiro (carrega música sem tocar)
+      // Clique no item inteiro (carrega música e toca)
       document.querySelectorAll('.history-item').forEach(item => {
         item.addEventListener('click', () => {
           const musicId = item.dataset.musicId;
           const music = this.history.find(m => m.id === musicId);
 
-          if (music && window.PlayerSystem) {
-            window.PlayerSystem.loadMusic(music);
+          if (music && window.player) {
+            // Encontrar índice da música no player se possível, ou apenas tocar
+            // Como o player atual é simples e baseado em array fixo, vamos tentar achar pelo título
+            // Se não achar, talvez devêssemos adicionar ao player?
+            // Por enquanto, vamos tentar achar pelo título
+            const trackIndex = window.player.tracks.findIndex(t => t.title === music.title);
+            if (trackIndex !== -1) {
+              window.player.currentTrackIndex = trackIndex;
+              window.player.updateDisplay();
+              if (!window.player.isPlaying) {
+                window.player.togglePlay();
+              }
+            } else {
+              console.warn('Música não encontrada na playlist atual do player');
+            }
           }
         });
       });
@@ -218,36 +217,10 @@
       const days = Math.floor(diff / 86400000);
 
       if (minutes < 1) return 'Agora';
-      if (minutes < 60) return `${minutes}min atrás`;
-      if (hours < 24) return `${hours}h atrás`;
-      return `${days}d atrás`;
+      if (minutes < 60) return `${minutes}m`;
+      if (hours < 24) return `${hours}h`;
+      return `${days}d`;
     },
-
-    /**
-     * Salva histórico no localStorage
-     */
-    saveToStorage() {
-      try {
-        localStorage.setItem('focuswave_history', JSON.stringify(this.history));
-      } catch (e) {
-        console.error('Erro ao salvar histórico:', e);
-      }
-    },
-
-    /**
-     * Carrega histórico do localStorage
-     */
-    loadFromStorage() {
-      try {
-        const stored = localStorage.getItem('focuswave_history');
-        if (stored) {
-          this.history = JSON.parse(stored);
-        }
-      } catch (e) {
-        console.error('Erro ao carregar histórico:', e);
-        this.history = [];
-      }
-    }
   };
 
   // Inicializa quando o DOM estiver pronto
