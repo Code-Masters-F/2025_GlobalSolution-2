@@ -6,6 +6,7 @@ import com.focuswave.dto.MusicHistoryDTO;
 import com.focuswave.model.Music;
 import com.focuswave.model.MusicHistory;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,14 +36,18 @@ public class HistoryService {
         List<MusicHistory> entries = musicHistoryDAO.findRecentByUser(userId, limit);
         List<MusicHistoryDTO> dtos = new ArrayList<>();
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         for (MusicHistory entry : entries) {
             Music music = musicDAO.findById(entry.getIdMusic());
+
+            String formattedPlayedAt = entry.getPlayedAt().toLocalDateTime().format(formatter);
 
             dtos.add(new MusicHistoryDTO(
                     music.getId(),
                     music.getTitle(),
                     music.getUrl(),
-                    entry.getPlayedAt()
+                    formattedPlayedAt
             ));
         }
         return dtos;

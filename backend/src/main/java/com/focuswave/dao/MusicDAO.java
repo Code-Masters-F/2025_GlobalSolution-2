@@ -15,7 +15,7 @@ public class MusicDAO {
     public List<Music> findByGoal(String goal) {
         List<Music> list = new ArrayList<>();
 
-        String sql = "SELECT id, title, description, url, category FROM music WHERE category = ?";
+        String sql = "SELECT id, title, description, url, category FROM fw_music WHERE category = ?";
 
         try (Connection connection = DBConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -42,7 +42,7 @@ public class MusicDAO {
     }
 
     public Music findById(int musicId) {
-        String sql = "SELECT id, title, description, url, category FROM music WHERE id = ?";
+        String sql = "SELECT id, title, description, url, category FROM fw_music WHERE id = ?";
 
         try (Connection connection = DBConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

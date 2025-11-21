@@ -9,11 +9,11 @@ public class MusicHistoryDTO {
     private int idMusic;
     private String title;
     private String url;
-    private Timestamp playedAt;
+    private String playedAt;
 
     public MusicHistoryDTO() {}
 
-    public MusicHistoryDTO(int idMusic, String title, String url, Timestamp playedAt) {
+    public MusicHistoryDTO(int idMusic, String title, String url, String playedAt) {
         this.idMusic = idMusic;
         this.title = title;
         this.url = url;
@@ -44,11 +44,11 @@ public class MusicHistoryDTO {
         this.url = url;
     }
 
-    public Timestamp getPlayedAt() {
+    public String getPlayedAt() {
         return playedAt;
     }
 
-    public void setPlayedAt(Timestamp playedAt) {
+    public void setPlayedAt(String playedAt) {
         this.playedAt = playedAt;
     }
 }

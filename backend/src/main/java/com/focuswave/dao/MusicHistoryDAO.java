@@ -15,7 +15,7 @@ public class MusicHistoryDAO {
      * Insere uma nova entrada no histórico.
      */
     public boolean insertEntry(int userId, int musicId) {
-        String sql = "INSERT INTO music_history (user_id, music_id, played_at) VALUES (?, ?, CURRENT_TIMESTAMP)";
+        String sql = "INSERT INTO fw_music_history (id_user_profile, id_music, played_at) VALUES (?, ?, CURRENT_TIMESTAMP)";
 
         try (Connection connection = DBConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -39,9 +39,9 @@ public class MusicHistoryDAO {
         List<MusicHistory> list = new ArrayList<>();
 
         String sql =
-                "SELECT id, user_id, music_id, played_at " +
-                        "FROM music_history " +
-                        "WHERE user_id = ? " +
+                "SELECT id, id_user_profile, id_music, played_at " +
+                        "FROM fw_music_history " +
+                        "WHERE id_user_profile = ? " +
                         "ORDER BY played_at DESC " +
                         "FETCH FIRST ? ROWS ONLY"; // Oracle
         // Para MySQL: "LIMIT ?"
@@ -55,21 +55,18 @@ public class MusicHistoryDAO {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-
+                MusicHistory entry = new MusicHistory(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("id_user_profile"),
+                        resultSet.getInt("id_music"),
+                        resultSet.getTimestamp("played_at")
+                );
+                list.add(entry);
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return list;
     }
-
-
-
-
-
-
-
 }

@@ -1,28 +1,42 @@
 package com.focuswave.model;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 public class MusicHistory {
     private int id;
-    private int id_user;
-    private int id_music;
+    private int idUser;
+    private int idMusic;
     private Timestamp playedAt;
 
+    public MusicHistory(int id, int idUser, int idMusic, Timestamp playedAt) {
+        this.id = id;
+        this.idUser = idUser;
+        this.idMusic = idMusic;
+        this.playedAt = playedAt;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getIdUser() {
-        return id_user;
+        return idUser;
     }
 
     public void setIdUser(int id_user) {
-        this.id_user = id_user;
+        this.idUser = id_user;
     }
 
     public int getIdMusic() {
-        return id_music;
+        return idMusic;
     }
 
     public void setIdMusic(int id_music) {
-        this.id_music = id_music;
+        this.idMusic = id_music;
     }
 
     public Timestamp getPlayedAt() {

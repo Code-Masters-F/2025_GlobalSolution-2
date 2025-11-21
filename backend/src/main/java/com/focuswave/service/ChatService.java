@@ -62,18 +62,63 @@ public class ChatService {
      */
     private String detectIntent(String text) {
 
+        text = text.toLowerCase();
+
+        // Foco
         if (text.contains("foco") || text.contains("focus") || text.contains("estudar")) {
             return "focus";
         }
 
-        if (text.contains("relax") || text.contains("descansar") || text.contains("calmar") || text.contains("acalmar")) {
+        // Relaxamento
+        if (text.contains("relax") || text.contains("descansar") ||
+                text.contains("calmar") || text.contains("acalmar") ||
+                text.contains("tranquilo") || text.contains("calmo")) {
             return "relax";
         }
 
+        // Sono
         if (text.contains("sono") || text.contains("dormir") || text.contains("sleep")) {
             return "sleep";
         }
 
+        // Rock
+        if (text.contains("rock") || text.contains("guitarra") || text.contains("pesado")) {
+            return "Rock";
+        }
+
+        // Pop
+        if (text.contains("pop") || text.contains("moderno") || text.contains("hits")) {
+            return "Pop";
+        }
+
+        // Bossa Nova
+        if (text.contains("bossa") || text.contains("bossa nova") || text.contains("violão")) {
+            return "Bossa Nova";
+        }
+
+        // MPB
+        if (text.contains("mpb") || text.contains("brasil") || text.contains("música brasileira")) {
+            return "MPB";
+        }
+
+        // Clássica
+        if (text.contains("classica") || text.contains("clássica") ||
+                text.contains("orquestra") || text.contains("violin") || text.contains("piano")) {
+            return "Clássica";
+        }
+
+        // Metal
+        if (text.contains("metal") || text.contains("heavy") || text.contains("metallica")) {
+            return "Metal";
+        }
+
+        // Grunge
+        if (text.contains("grunge") || text.contains("nirvana") ||
+                text.contains("anos 90") || text.contains("90s")) {
+            return "Grunge";
+        }
+
         return "neutral";
     }
+
 }
