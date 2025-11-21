@@ -16,11 +16,17 @@
     flex-direction: column;
     padding: var(--spacing-sm);
     gap: var(--spacing-sm);
+    height: auto;
+    /* Allow height to grow */
+    overflow-y: auto;
+    /* Enable scrolling */
   }
 
-  .player-sidebar {
-    display: none;
-    /* Hide player on mobile for now, or convert to bottom bar */
+  .right-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--spacing-md);
   }
 
   .chat-header h2 {
@@ -30,5 +36,11 @@
   .modal__content {
     width: 95%;
     padding: var(--spacing-md);
+  }
+
+  .chat-container {
+    min-height: 75vh;
+    /* Increased height for better mobile experience */
+    height: auto;
   }
 }

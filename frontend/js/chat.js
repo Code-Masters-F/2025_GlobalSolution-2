@@ -26,6 +26,15 @@ class ChatController {
       btn.addEventListener('click', () => {
         const message = btn.dataset.message;
         this.addMessage(message, 'user');
+
+        // Trigger Timer Mode
+        if (window.timer) {
+          const lowerMsg = message.toLowerCase();
+          if (lowerMsg.includes('foco') || lowerMsg.includes('focar')) window.timer.setMode('focus');
+          else if (lowerMsg.includes('relaxar')) window.timer.setMode('relax');
+          else if (lowerMsg.includes('música')) window.timer.setMode('music');
+        }
+
         this.processResponse(message);
       });
     });

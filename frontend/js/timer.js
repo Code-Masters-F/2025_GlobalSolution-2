@@ -3,11 +3,12 @@ class PomodoroTimer {
     this.timeLeft = 25 * 60;
     this.isRunning = false;
     this.timerId = null;
-    this.mode = 'focus'; // 'focus', 'break'
+    this.mode = 'focus'; // 'focus', 'break', 'relax', 'music'
 
     // DOM Elements (Status Bar)
     this.sbTimeDisplay = document.getElementById('status-time');
     this.sbStatusDisplay = document.getElementById('status-state');
+    this.sbIcon = document.querySelector('.timer-icon');
     this.sbPlayBtn = document.getElementById('sb-play');
     this.sbPauseBtn = document.getElementById('sb-pause');
     this.sbResetBtn = document.getElementById('sb-reset');
@@ -90,12 +91,19 @@ class PomodoroTimer {
     this.updateDisplay();
   }
 
+  setMode(mode) {
+    this.mode = mode;
+    this.reset();
+  }
+
   complete() {
     this.pause();
     this.playNotificationSound();
 
-    // Toggle mode
-    this.mode = this.mode === 'focus' ? 'break' : 'focus';
+    // Toggle mode logic
+    if (this.mode === 'focus') this.mode = 'break';
+    else if (this.mode === 'break') this.mode = 'focus';
+    else this.mode = 'focus'; // Default back to focus
 
     // Show notification
     if (Notification.permission === "granted") {
