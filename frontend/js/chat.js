@@ -5,10 +5,6 @@ class ChatController {
     this.chatInput = document.getElementById('chat-input');
     this.quickActions = document.querySelectorAll('.chip');
 
-    // Configuration
-    this.API_URL = 'http://localhost:8080/chat/suggestions';
-    this.USE_MOCK = true; // Set to false when backend is ready
-
     this.init();
   }
 
@@ -102,28 +98,12 @@ class ChatController {
   }
 
   async fetchSuggestions(goal, lastMusicId) {
-    if (this.USE_MOCK) {
-      return this.getMockSuggestions(goal);
+    if (window.MusicService) {
+      return await window.MusicService.getSuggestions(goal, lastMusicId);
+    } else {
+      console.error('MusicService not found');
+      return [];
     }
-
-    const payload = {
-      goal: goal,
-      lastMusicId: lastMusicId ? parseInt(lastMusicId) : null
-    };
-
-    const response = await fetch(this.API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    return await response.json();
   }
 
   renderMusicCard(music, originalGoal) {
@@ -216,23 +196,6 @@ class ChatController {
     if (this.messagesContainer) {
       this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
     }
-  }
-
-  // Mock Data Generator
-  getMockSuggestions(goal) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const suggestions = [
-          { id: 1, title: "Lo-Fi Study Beats", description: "Batidas calmas para foco intenso.", category: "Foco", url: "music1.mp3" },
-          { id: 2, title: "Nature Sounds", description: "Sons de chuva e floresta.", category: "Relax", url: "music2.mp3" },
-          { id: 3, title: "Deep Focus Alpha", description: "Ondas alpha para concentração.", category: "Foco", url: "music3.mp3" },
-          { id: 4, title: "Piano Ambient", description: "Piano suave para leitura.", category: "Estudo", url: "music4.mp3" }
-        ];
-
-        const random = suggestions[Math.floor(Math.random() * suggestions.length)];
-        resolve([random]);
-      }, 1000);
-    });
   }
 }
 

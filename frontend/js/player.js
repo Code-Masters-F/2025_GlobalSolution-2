@@ -2,11 +2,7 @@ class PlayerController {
   constructor() {
     this.isPlaying = false;
     this.currentTrackIndex = 0;
-    this.tracks = [
-      { title: "Lo-Fi Focus", description: "Beats para concentração" },
-      { title: "Rain Sounds", description: "Sons de chuva relaxantes" },
-      { title: "Classical Flow", description: "Piano suave" }
-    ];
+    this.tracks = []; // Will be populated by MusicService
 
     // DOM Elements
     this.playBtn = document.getElementById('player-play');
@@ -19,23 +15,42 @@ class PlayerController {
     this.init();
   }
 
-  init() {
+  async init() {
     this.setupEventListeners();
-    this.updateDisplay();
+    await this.loadPlaylist();
+  }
+
+  async loadPlaylist() {
+    if (window.MusicService) {
+      try {
+        const musics = await window.MusicService.getAllMusics();
+        if (musics && musics.length > 0) {
+          this.tracks = musics;
+          this.updateDisplay();
+          this.enableControls();
+        }
+      } catch (error) {
+        console.error('Failed to load playlist:', error);
+        this.titleDisplay.textContent = "Erro ao carregar";
+      }
+    }
   }
 
   setupEventListeners() {
     this.playBtn?.addEventListener('click', () => this.togglePlay());
     this.prevBtn?.addEventListener('click', () => this.prevTrack());
     this.nextBtn?.addEventListener('click', () => this.nextTrack());
+  }
 
-    // Enable buttons
+  enableControls() {
     if (this.playBtn) this.playBtn.disabled = false;
     if (this.prevBtn) this.prevBtn.disabled = false;
     if (this.nextBtn) this.nextBtn.disabled = false;
   }
 
   togglePlay() {
+    if (this.tracks.length === 0) return;
+
     this.isPlaying = !this.isPlaying;
     this.updateControls();
 
@@ -56,22 +71,26 @@ class PlayerController {
   }
 
   prevTrack() {
+    if (this.tracks.length === 0) return;
     this.currentTrackIndex = (this.currentTrackIndex - 1 + this.tracks.length) % this.tracks.length;
     this.updateDisplay();
     if (this.isPlaying) {
-      // restart playing
+      // restart playing logic would go here
     }
   }
 
   nextTrack() {
+    if (this.tracks.length === 0) return;
     this.currentTrackIndex = (this.currentTrackIndex + 1) % this.tracks.length;
     this.updateDisplay();
     if (this.isPlaying) {
-      // restart playing
+      // restart playing logic would go here
     }
   }
 
   updateDisplay() {
+    if (this.tracks.length === 0) return;
+
     const track = this.tracks[this.currentTrackIndex];
     if (this.titleDisplay) this.titleDisplay.textContent = track.title;
     if (this.descDisplay) this.descDisplay.textContent = track.description;
@@ -96,6 +115,7 @@ class PlayerController {
 
     this.currentTrackIndex = index;
     this.updateDisplay();
+    this.enableControls();
 
     if (!this.isPlaying) {
       this.togglePlay();
