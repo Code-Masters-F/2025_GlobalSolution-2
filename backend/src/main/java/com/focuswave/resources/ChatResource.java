@@ -26,7 +26,10 @@ public class ChatResource {
                     .build();
         }
 
-        List<MusicSuggestionDTO> suggestions = chatService.getSuggestions(requestDTO.getGoal());
+        String goal = requestDTO.getGoal();
+        Integer lastMusicId = requestDTO.getLastMusicId();
+
+        List<MusicSuggestionDTO> suggestions = chatService.getSuggestions(goal, lastMusicId);
 
         return Response.ok(suggestions).build();
     }

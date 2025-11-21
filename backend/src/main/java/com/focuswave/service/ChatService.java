@@ -1,8 +1,8 @@
 package com.focuswave.service;
 
 import com.focuswave.dao.MusicDAO;
-import com.focuswave.dto.MusicDTO;
 import com.focuswave.dto.MusicSuggestionDTO;
+import com.focuswave.model.Music;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +25,7 @@ public class ChatService {
         String intent = detectIntent(normalized);
 
         // Busca músicas do banco correspondentes à intenção
-        List<MusicDTO> all = musicDAO.findByGoal(intent);
+        List<Music> all = musicDAO.findByGoal(intent);
 
         // Embaralhar para dar variedade
         Collections.shuffle(all);
@@ -44,7 +44,7 @@ public class ChatService {
         // Converter MusicDTO → MusicSuggestionDTO
         List<MusicSuggestionDTO> suggestions = new ArrayList<>();
 
-        for (MusicDTO m : all) {
+        for (Music m : all) {
             suggestions.add(new MusicSuggestionDTO(
                     m.getId(),
                     m.getTitle(),
