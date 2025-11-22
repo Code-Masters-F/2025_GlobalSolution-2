@@ -100,6 +100,42 @@ class UserService {
       window.HistoryService.setUserId(1);
     }
   }
+
+  /**
+   * Registro de novo usuário
+   * @param {string} name
+   * @param {string} email
+   * @param {string} password
+   */
+  async register(name, email, password) {
+    // Simula delay de rede
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    // Simula chamada ao backend
+    console.log(`POST /auth/register`, { name, email, password });
+
+    // Validação simples de email duplicado (simulada)
+    if (email.includes('erro')) {
+      return { success: false, error: 'Email já cadastrado' };
+    }
+
+    // Cria novo usuário
+    const newUser = {
+      id: Date.now(), // ID temporário
+      name: name,
+      email: email
+    };
+
+    // Loga o usuário automaticamente
+    this.currentUser = newUser;
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.currentUser));
+
+    if (window.HistoryService) {
+      window.HistoryService.setUserId(newUser.id);
+    }
+
+    return { success: true, user: newUser };
+  }
 }
 
 // Export singleton

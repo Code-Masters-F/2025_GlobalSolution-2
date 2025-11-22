@@ -271,7 +271,7 @@ class ChatController {
             <button class="btn-another-music w-12 h-10 rounded-full border border-white/20 hover:bg-white/10 flex items-center justify-center text-white transition-all"
               data-goal="${originalGoal}"
               data-last-music-id="${music.id || ''}"
-              title="Quero outra sugestão">
+              title="Trocar música">
               <i data-lucide="refresh-cw" style="width:18px; height:18px;"></i>
             </button>
           </div>
@@ -311,6 +311,9 @@ class ChatController {
   }
 
   handleAnotherMusic(goal, lastMusicId) {
+    if (window.player && typeof window.player.stop === 'function') {
+      window.player.stop();
+    }
     this.processResponse(goal, lastMusicId);
   }
 

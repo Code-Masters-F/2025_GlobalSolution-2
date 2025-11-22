@@ -35,6 +35,13 @@
       this.elements.passwordInput = document.querySelector('#modal-login input[type="password"]');
       this.elements.submitBtn = document.querySelector('#modal-login .btn--primary');
       this.elements.userBtn = document.querySelector('[data-modal="login"]');
+
+      // Register elements
+      this.elements.registerForm = document.querySelector('#modal-register .register-form');
+      this.elements.regNameInput = document.querySelector('#modal-register input[type="text"]');
+      this.elements.regEmailInput = document.querySelector('#modal-register input[type="email"]');
+      this.elements.regPasswordInput = document.querySelector('#modal-register input[type="password"]');
+      this.elements.regSubmitBtn = document.querySelector('#modal-register .btn--primary');
     },
 
     /**
@@ -42,32 +49,68 @@
      */
     attachEventListeners() {
       if (this.elements.loginForm) {
-        this.elements.loginForm.addEventListener('submit', (e) => this.handleSubmit(e));
+        this.elements.loginForm.addEventListener('submit', (e) => this.handleSubmit(e, 'login'));
+      }
+      if (this.elements.registerForm) {
+        this.elements.registerForm.addEventListener('submit', (e) => this.handleSubmit(e, 'register'));
+      }
+
+      // Switch buttons
+      document.querySelectorAll('.auth-switch a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = e.target.dataset.switch;
+          this.switchModal(target);
+        });
+      });
+    },
+
+    switchModal(target) {
+      if (window.ModalSystem) {
+        window.ModalSystem.close();
+        setTimeout(() => {
+          const modalId = target === 'register' ? 'modal-register' : 'modal-login';
+          const modal = document.getElementById(modalId);
+          if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+          }
+        }, 300);
       }
     },
 
     /**
      * Processa submit do formulário
      */
-    async handleSubmit(e) {
+    async handleSubmit(e, type) {
       e.preventDefault();
 
-      const email = this.elements.emailInput?.value?.trim();
-      const password = this.elements.passwordInput?.value;
+      const isLogin = type === 'login';
+      const email = isLogin ? this.elements.emailInput?.value?.trim() : this.elements.regEmailInput?.value?.trim();
+      const password = isLogin ? this.elements.passwordInput?.value : this.elements.regPasswordInput?.value;
+      const name = isLogin ? null : this.elements.regNameInput?.value?.trim();
 
-      if (!email || !password) {
-        this.showError('Preencha todos os campos');
+      if (!email || !password || (!isLogin && !name)) {
+        this.showError('Preencha todos os campos', type);
         return;
       }
 
-      // Desabilita botão durante login
-      if (this.elements.submitBtn) {
-        this.elements.submitBtn.disabled = true;
-        this.elements.submitBtn.textContent = 'Entrando...';
+      const btn = isLogin ? this.elements.submitBtn : this.elements.regSubmitBtn;
+      const originalText = btn.textContent;
+
+      // Desabilita botão
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = isLogin ? 'Entrando...' : 'Cadastrando...';
       }
 
       try {
-        const result = await window.UserService.login(email, password);
+        let result;
+        if (isLogin) {
+          result = await window.UserService.login(email, password);
+        } else {
+          result = await window.UserService.register(name, email, password);
+        }
 
         if (result.success) {
           this.clearError();
@@ -85,17 +128,17 @@
           }
 
           // Feedback visual
-          this.showWelcome(result.user.name);
+          this.showWelcome(result.user.name, !isLogin);
         } else {
-          this.showError(result.error);
+          this.showError(result.error, type);
         }
       } catch (error) {
-        this.showError('Erro ao fazer login. Tente novamente.');
-        console.error('Login error:', error);
+        this.showError('Erro ao processar solicitação. Tente novamente.', type);
+        console.error('Auth error:', error);
       } finally {
-        if (this.elements.submitBtn) {
-          this.elements.submitBtn.disabled = false;
-          this.elements.submitBtn.textContent = 'Entrar';
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = originalText;
         }
       }
     },
@@ -103,38 +146,45 @@
     /**
      * Exibe mensagem de erro
      */
-    showError(message) {
-      // Cria elemento de erro se não existir
-      if (!this.elements.errorMsg) {
-        this.elements.errorMsg = document.createElement('p');
-        this.elements.errorMsg.className = 'login-error';
-        this.elements.errorMsg.style.cssText = 'color: var(--color-error, #ef4444); font-size: 0.875rem; margin-top: 0.5rem; text-align: center;';
+    showError(message, type = 'login') {
+      const form = type === 'login' ? this.elements.loginForm : this.elements.registerForm;
+      if (!form) return;
 
-        if (this.elements.submitBtn) {
-          this.elements.submitBtn.parentNode.insertBefore(this.elements.errorMsg, this.elements.submitBtn);
+      let errorMsg = form.querySelector('.login-error');
+
+      // Cria elemento de erro se não existir
+      if (!errorMsg) {
+        errorMsg = document.createElement('p');
+        errorMsg.className = 'login-error';
+        errorMsg.style.cssText = 'color: var(--color-error, #ef4444); font-size: 0.875rem; margin-top: 0.5rem; text-align: center;';
+
+        const btn = form.querySelector('.btn--primary');
+        if (btn) {
+          btn.parentNode.insertBefore(errorMsg, btn);
         }
       }
 
-      this.elements.errorMsg.textContent = message;
-      this.elements.errorMsg.style.display = 'block';
+      errorMsg.textContent = message;
+      errorMsg.style.display = 'block';
     },
 
     /**
      * Limpa mensagem de erro
      */
     clearError() {
-      if (this.elements.errorMsg) {
-        this.elements.errorMsg.style.display = 'none';
-      }
+      document.querySelectorAll('.login-error').forEach(el => el.style.display = 'none');
     },
 
     /**
      * Mostra mensagem de boas-vindas
      */
-    showWelcome(name) {
+    showWelcome(name, isNew = false) {
       // Adiciona mensagem no chat
       if (window.chat) {
-        window.chat.addMessage(`Bem-vindo de volta, ${name}! Como posso ajudar você a focar hoje?`, 'ai');
+        const msg = isNew
+          ? `Bem-vindo ao FocusWave, ${name}! Conta criada com sucesso. Como posso ajudar você a focar hoje?`
+          : `Bem-vindo de volta, ${name}! Como posso ajudar você a focar hoje?`;
+        window.chat.addMessage(msg, 'ai');
       }
     },
 

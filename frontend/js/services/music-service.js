@@ -78,7 +78,7 @@ class MusicService {
                     { id: 1, title: "Lo-Fi Study Beats", description: "Batidas calmas para foco intenso.", category: "Foco", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
                     { id: 2, title: "Nature Sounds", description: "Sons de chuva e floresta.", category: "Relax", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
                     { id: 3, title: "Deep Focus Alpha", description: "Ondas alpha para concentração.", category: "Foco", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-                    { id: 4, title: "Rock Classics", description: "Energia para o trabalho.", category: "Rock", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" }
+                    { id: 4, title: "Rock Classics", description: "Energia para o trabalho.", category: "Rock", url: "https://www.soundhelix.com/examples/mp3/SoundH    elix-Song-4.mp3" }
                 ];
 
                 let filtered = allSuggestions;

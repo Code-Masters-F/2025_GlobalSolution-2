@@ -224,7 +224,6 @@
       </div>
 
     </aside>
-
   </main>
 
   <!-- Modals -->
@@ -253,6 +252,47 @@
           </div>
         </div>
         <button type="submit" class="btn btn--primary">Entrar</button>
+        <p class="auth-switch">
+          Não tem conta? <a href="#" data-switch="register">Cadastre-se</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div id="modal-register" class="modal">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__content glass-card">
+      <header class="modal__header">
+        <h2>Criar Conta</h2>
+        <button class="close-btn" data-close><i data-lucide="x"></i></button>
+      </header>
+      <form class="register-form">
+        <div class="form-group">
+          <label>Nome</label>
+          <div class="input-icon">
+            <i data-lucide="user"></i>
+            <input type="text" class="glass-input" placeholder="Seu nome" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <div class="input-icon">
+            <i data-lucide="mail"></i>
+            <input type="email" class="glass-input" placeholder="seu@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <div class="input-icon">
+            <i data-lucide="lock"></i>
+            <input type="password" class="glass-input" placeholder="••••••" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn--primary">Cadastrar</button>
+        <p class="auth-switch">
+          Já tem conta? <a href="#" data-switch="login">Entrar</a>
+        </p>
       </form>
     </div>
   </div>

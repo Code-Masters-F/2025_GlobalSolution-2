@@ -155,23 +155,17 @@
       document.querySelectorAll('.history-item').forEach(item => {
         item.addEventListener('click', () => {
           const musicId = item.dataset.musicId;
-          const music = this.history.find(m => m.id === musicId);
+          // Use loose equality to handle string/number id mismatch
+          const music = this.history.find(m => m.id == musicId);
 
           if (music && window.player) {
-            // Encontrar índice da música no player se possível, ou apenas tocar
-            // Como o player atual é simples e baseado em array fixo, vamos tentar achar pelo título
-            // Se não achar, talvez devêssemos adicionar ao player?
-            // Por enquanto, vamos tentar achar pelo título
-            const trackIndex = window.player.tracks.findIndex(t => t.title === music.title);
-            if (trackIndex !== -1) {
-              window.player.currentTrackIndex = trackIndex;
-              window.player.updateDisplay();
-              if (!window.player.isPlaying) {
-                window.player.togglePlay();
-              }
+            if (typeof window.player.loadTrack === 'function') {
+              window.player.loadTrack(music);
             } else {
-              console.warn('Música não encontrada na playlist atual do player');
+              console.error('Player does not support loadTrack');
             }
+          } else {
+            console.warn('Music not found in history or player not initialized', { musicId, music });
           }
         });
       });

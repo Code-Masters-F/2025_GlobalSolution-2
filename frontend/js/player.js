@@ -358,6 +358,18 @@ class PlayerController {
     }
   }
 
+  stop() {
+    this.isPlaying = false;
+    this.audio.pause();
+    this.audio.currentTime = 0;
+
+    if (this.ytPlayer && this.isYouTubeReady) {
+      try { this.ytPlayer.stopVideo(); } catch (e) { }
+    }
+
+    this.updateControls();
+  }
+
   // Called by chat when clicking "Tocar Agora"
   loadTrack(track) {
     if (!track) {
