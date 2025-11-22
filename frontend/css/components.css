@@ -1432,11 +1432,181 @@ textarea:focus-visible {
    RIGHT SIDEBAR LAYOUT
    ======================================== */
 .right-sidebar {
-  width: 320px;
+  width: 420px;
+  min-width: 380px;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
-  flex-shrink: 0;
+  gap: var(--spacing-sm);
+}
+
+/* ========================================
+   PLAYER CARD COMPACT
+   ======================================== */
+.player-card--compact {
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.player-card--compact .player-header {
+  margin-bottom: var(--spacing-xs);
+}
+
+.player-card--compact .player-info {
+  margin-bottom: var(--spacing-xs);
+  text-align: center;
+}
+
+.player-card--compact .player-info h4 {
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+}
+
+.player-card--compact .player-info p {
+  font-size: 0.75rem;
+}
+
+.player-card--compact .player-controls {
+  margin-bottom: var(--spacing-xs);
+  gap: var(--spacing-sm);
+}
+
+.player-card--compact .player-volume {
+  padding-top: var(--spacing-xs);
+}
+
+/* ========================================
+   PLAYER VIDEO AREA
+   ======================================== */
+.player-video-area {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 140px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: var(--spacing-xs);
+}
+
+.player-video-area--small {
+  max-height: 120px;
+}
+
+.video-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  color: var(--text-tertiary);
+}
+
+.video-placeholder i {
+  width: 32px;
+  height: 32px;
+  opacity: 0.5;
+}
+
+.video-placeholder span {
+  font-size: 0.75rem;
+}
+
+.yt-embed-container {
+  width: 100%;
+  height: 100%;
+}
+
+.yt-embed-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.video-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.btn-watch-youtube {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(255, 0, 0, 0.9);
+  color: white;
+  font-weight: 600;
+  font-size: 0.8rem;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.btn-watch-youtube:hover {
+  background: #ff0000;
+  transform: scale(1.05);
+  box-shadow: 0 6px 30px rgba(255, 0, 0, 0.4);
+}
+
+.btn-watch-youtube i {
+  width: 14px;
+  height: 14px;
+}
+
+/* ========================================
+   VOLUME SLIDER STYLES
+   ======================================== */
+.volume-slider {
+  flex: 1;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(to right, var(--accent-primary, #06b6d4) 70%, rgba(255,255,255,0.2) 70%);
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--accent-primary, #06b6d4);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--accent-primary, #06b6d4);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
 }
 
 /* ========================================
@@ -1545,11 +1715,12 @@ textarea:focus-visible {
    CAROUSEL CARD (IMPROVED DESIGN)
    ======================================== */
 .carousel-card {
-  padding: var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
   background: linear-gradient(180deg, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.4) 100%);
   position: relative;
+  flex: 1;
+  min-height: 180px;
   overflow: hidden;
-  min-height: 240px;
   display: flex;
   flex-direction: column;
 }

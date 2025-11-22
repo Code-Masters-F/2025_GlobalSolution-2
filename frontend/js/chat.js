@@ -106,11 +106,119 @@ class ChatController {
   }
 
   getLLMIntro(userMessage, count) {
-    const lowerMsg = userMessage.toLowerCase();
-    if (lowerMsg.includes('rock')) return `Encontrei ${count} músicas de Rock para energizar seu dia! Aqui está uma sugestão:`;
-    if (lowerMsg.includes('foco')) return `Para ajudar no seu foco, selecionei ${count} faixas especiais. Comece com esta:`;
-    if (lowerMsg.includes('relax')) return `Hora de relaxar. Encontrei ${count} músicas tranquilas para você:`;
-    return `Entendi! Com base no seu pedido, encontrei ${count} músicas que podem combinar. Confira:`;
+    const msg = userMessage.toLowerCase();
+
+    // Rock
+    if (msg.includes('rock') || msg.includes('guitarra') || msg.includes('energia') || msg.includes('animado')) {
+      const responses = [
+        `Rock and Roll! Encontrei ${count} músicas para te dar energia. Começa com essa:`,
+        `Hora de soltar a guitarra! Separei ${count} clássicos do rock pra você:`,
+        `Energia no máximo! Tenho ${count} músicas de rock perfeitas para o momento:`
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // Pop
+    if (msg.includes('pop') || msg.includes('hit') || msg.includes('dançar') || msg.includes('alegre') || msg.includes('feliz')) {
+      const responses = [
+        `Pop hits chegando! Encontrei ${count} músicas animadas pra você:`,
+        `Hora de dançar! Selecionei ${count} hits pop especiais:`,
+        `Música pra levantar o astral! Aqui estão ${count} opções:`
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // Bossa Nova / Relaxar
+    if (msg.includes('bossa') || msg.includes('relaxar') || msg.includes('relax') || msg.includes('calmo') ||
+        msg.includes('tranquilo') || msg.includes('descansar') || msg.includes('paz') || msg.includes('suave')) {
+      const responses = [
+        `Momento de paz... Separei ${count} músicas suaves pra você relaxar:`,
+        `Hora de desacelerar. Encontrei ${count} faixas tranquilas:`,
+        `Relaxa que a vida é boa! Tenho ${count} músicas calmas perfeitas:`
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // MPB / Brasileiro
+    if (msg.includes('mpb') || msg.includes('brasil') || msg.includes('brasileiro') || msg.includes('saudade')) {
+      const responses = [
+        `MPB de qualidade! Encontrei ${count} músicas brasileiras pra você:`,
+        `Saudade do Brasil? Separei ${count} clássicos da MPB:`,
+        `Música brasileira de primeira! Aqui estão ${count} opções:`
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // Clássica / Foco / Estudar
+    if (msg.includes('foco') || msg.includes('focar') || msg.includes('estudar') || msg.includes('trabalhar') ||
+        msg.includes('concentrar') || msg.includes('classica') || msg.includes('piano') || msg.includes('produtivo')) {
+      const responses = [
+        `Modo foco ativado! Selecionei ${count} músicas para concentração máxima:`,
+        `Hora de produzir! Encontrei ${count} faixas perfeitas para estudar:`,
+        `Concentração total! Tenho ${count} músicas clássicas para você focar:`
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // Metal
+    if (msg.includes('metal') || msg.includes('heavy') || msg.includes('pesado') || msg.includes('intenso')) {
+      const responses = [
+        `Heavy Metal! Encontrei ${count} músicas pesadas pra você:`,
+        `Intensidade no máximo! Separei ${count} faixas de metal:`,
+        `Hora do peso! Aqui estão ${count} músicas pra headbang:`
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // Grunge / Anos 90
+    if (msg.includes('grunge') || msg.includes('nirvana') || msg.includes('90') || msg.includes('alternativo')) {
+      const responses = [
+        `Voltando aos anos 90! Encontrei ${count} clássicos do grunge:`,
+        `Nostalgia alternativa! Separei ${count} músicas da era grunge:`,
+        `Seattle calling! Tenho ${count} faixas do melhor do grunge:`
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // Dormir
+    if (msg.includes('dormir') || msg.includes('sono') || msg.includes('noite')) {
+      const responses = [
+        `Hora de descansar... Separei ${count} músicas relaxantes pra você:`,
+        `Boa noite! Encontrei ${count} faixas suaves para embalar seu sono:`,
+        `Relaxa e dorme bem! Aqui estão ${count} músicas calmas:`
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // Treino
+    if (msg.includes('treino') || msg.includes('academia') || msg.includes('malhar') || msg.includes('exerc')) {
+      const responses = [
+        `Bora treinar! Encontrei ${count} músicas pra bombar seu treino:`,
+        `Energia pro workout! Separei ${count} faixas motivacionais:`,
+        `No pain, no gain! Tenho ${count} músicas pra te dar força:`
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // Saudação
+    if (msg.includes('olá') || msg.includes('oi') || msg.includes('ola') || msg.includes('bom dia') ||
+        msg.includes('boa tarde') || msg.includes('boa noite')) {
+      const responses = [
+        `Olá! Que bom te ver por aqui. Encontrei ${count} músicas que você pode gostar:`,
+        `Oi! Pronto pra uma boa música? Tenho ${count} sugestões:`,
+        `E aí! Separei ${count} músicas especiais pra você:`
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // Genérico / Fallback
+    const fallbacks = [
+      `Entendi seu pedido! Encontrei ${count} músicas que combinam. Confira:`,
+      `Boa escolha! Separei ${count} músicas pra você:`,
+      `Achei ${count} músicas que você vai curtir. Começa com essa:`,
+      `Pronto! Tenho ${count} sugestões musicais pra você:`
+    ];
+    return fallbacks[Math.floor(Math.random() * fallbacks.length)];
   }
 
   async fetchSuggestions(goal, lastMusicId) {
@@ -123,6 +231,12 @@ class ChatController {
   }
 
   renderMusicCard(music, originalGoal) {
+    // Escapa aspas para evitar quebra do HTML
+    const safeTitle = (music.title || '').replace(/"/g, '&quot;');
+    const safeDesc = (music.description || '').replace(/"/g, '&quot;');
+    const safeUrl = (music.url || '').replace(/"/g, '&quot;');
+    const safeCategory = (music.category || '').replace(/"/g, '&quot;');
+
     const cardHtml = `
       <div class="music-suggestion-card">
         <div class="glass-card p-4 mt-3 mb-2" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);">
@@ -135,19 +249,20 @@ class ChatController {
               <i data-lucide="music" style="width:20px; height:20px;"></i>
             </div>
           </div>
-          
+
           <div class="flex gap-3 mt-4">
             <button class="btn-play-music flex-1 bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-2 px-4 rounded-full flex items-center justify-center gap-2 transition-all"
-              data-title="${music.title}" 
-              data-artist="${music.category}" 
-              data-description="${music.description}"
-              data-url="${music.url}">
+              data-id="${music.id || ''}"
+              data-title="${safeTitle}"
+              data-category="${safeCategory}"
+              data-description="${safeDesc}"
+              data-url="${safeUrl}">
               <i data-lucide="play" style="width:18px; height:18px; fill: currentColor;"></i>
               Tocar Agora
             </button>
-            
+
             <button class="btn-another-music w-12 h-10 rounded-full border border-white/20 hover:bg-white/10 flex items-center justify-center text-white transition-all"
-              data-goal="${originalGoal}" 
+              data-goal="${originalGoal}"
               title="Quero outra sugestão">
               <i data-lucide="refresh-cw" style="width:18px; height:18px;"></i>
             </button>
@@ -159,18 +274,31 @@ class ChatController {
   }
 
   handlePlayMusic(data) {
+    console.log('handlePlayMusic data:', data);
+
+    if (!data.url) {
+      console.error('No URL in track data');
+      return;
+    }
+
     if (window.player) {
       const track = {
-        title: data.title,
-        description: data.description || data.artist,
+        id: data.id || null,
+        title: data.title || 'Música',
+        description: data.description || data.category || '',
+        category: data.category || '',
         url: data.url
       };
+
+      console.log('Sending track to player:', track);
 
       if (typeof window.player.loadTrack === 'function') {
         window.player.loadTrack(track);
       } else {
         console.error('Player does not support loadTrack');
       }
+    } else {
+      console.error('Player not found');
     }
   }
 
