@@ -11,5 +11,8 @@ public class ApiConfig extends ResourceConfig {
 
         // habilita JSON Jackson
         register(org.glassfish.jersey.jackson.JacksonFeature.class);
+
+        // habilita CORS
+        register(CorsFilter.class);
     }
 }

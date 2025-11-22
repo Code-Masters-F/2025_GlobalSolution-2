@@ -12,6 +12,36 @@ import java.util.List;
 
 public class MusicDAO {
 
+    /**
+     * Retorna todas as músicas do banco.
+     */
+    public List<Music> findAll() {
+        List<Music> list = new ArrayList<>();
+
+        String sql = "SELECT id, title, description, url, category FROM fw_music";
+
+        try (Connection connection = DBConnectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Music music = new Music(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getString("url"),
+                        rs.getString("category")
+                );
+                list.add(music);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
     public List<Music> findByGoal(String goal) {
         List<Music> list = new ArrayList<>();
 
