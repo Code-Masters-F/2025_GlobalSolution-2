@@ -33,14 +33,15 @@ class MusicService {
      * @param {string} goal - User's intention
      * @returns {Promise<Array>} List of suggestions
      */
-    async getSuggestions(goal) {
+    async getSuggestions(goal, lastMusicId) {
         if (this.USE_MOCK) {
             return this.getMockSuggestions(goal);
         }
 
         try {
             const payload = {
-                goal: goal
+                goal: goal,
+                lastMusicId: lastMusicId
             };
 
             // Updated endpoint to match user screenshot

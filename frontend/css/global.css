@@ -118,6 +118,14 @@ body {
   flex-direction: column;
 }
 
+/* ========================================
+   GLOBAL ICON STYLES
+   ======================================== */
+
+.lucide {
+  stroke-width: 1 !important;
+}
+
 /* Status Bar */
 .status-bar {
   position: fixed;

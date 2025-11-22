@@ -38,7 +38,7 @@ class ChatController {
         if (target.classList.contains('btn-play-music')) {
           this.handlePlayMusic(target.dataset);
         } else if (target.classList.contains('btn-another-music')) {
-          this.handleAnotherMusic(target.dataset.goal);
+          this.handleAnotherMusic(target.dataset.goal, target.dataset.lastMusicId);
         }
       });
     }
@@ -72,15 +72,21 @@ class ChatController {
     this.messagesContainer.appendChild(messageDiv);
     this.scrollToBottom();
 
-    if (window.lucide) lucide.createIcons();
+    if (window.lucide) {
+      lucide.createIcons({
+        attrs: {
+          'stroke-width': '1.5'
+        }
+      });
+    }
   }
 
-  async processResponse(userMessage) {
+  async processResponse(userMessage, lastMusicId = null) {
     this.showTypingIndicator();
 
     try {
       // Use ChatService to fetch suggestions
-      const suggestions = await this.fetchSuggestions(userMessage);
+      const suggestions = await this.fetchSuggestions(userMessage, lastMusicId);
       this.removeTypingIndicator();
 
       if (suggestions && suggestions.length > 0) {
@@ -130,7 +136,7 @@ class ChatController {
 
     // Bossa Nova / Relaxar
     if (msg.includes('bossa') || msg.includes('relaxar') || msg.includes('relax') || msg.includes('calmo') ||
-        msg.includes('tranquilo') || msg.includes('descansar') || msg.includes('paz') || msg.includes('suave')) {
+      msg.includes('tranquilo') || msg.includes('descansar') || msg.includes('paz') || msg.includes('suave')) {
       const responses = [
         `Momento de paz... Separei ${count} músicas suaves pra você relaxar:`,
         `Hora de desacelerar. Encontrei ${count} faixas tranquilas:`,
@@ -151,7 +157,7 @@ class ChatController {
 
     // Clássica / Foco / Estudar
     if (msg.includes('foco') || msg.includes('focar') || msg.includes('estudar') || msg.includes('trabalhar') ||
-        msg.includes('concentrar') || msg.includes('classica') || msg.includes('piano') || msg.includes('produtivo')) {
+      msg.includes('concentrar') || msg.includes('classica') || msg.includes('piano') || msg.includes('produtivo')) {
       const responses = [
         `Modo foco ativado! Selecionei ${count} músicas para concentração máxima:`,
         `Hora de produzir! Encontrei ${count} faixas perfeitas para estudar:`,
@@ -202,7 +208,7 @@ class ChatController {
 
     // Saudação
     if (msg.includes('olá') || msg.includes('oi') || msg.includes('ola') || msg.includes('bom dia') ||
-        msg.includes('boa tarde') || msg.includes('boa noite')) {
+      msg.includes('boa tarde') || msg.includes('boa noite')) {
       const responses = [
         `Olá! Que bom te ver por aqui. Encontrei ${count} músicas que você pode gostar:`,
         `Oi! Pronto pra uma boa música? Tenho ${count} sugestões:`,
@@ -246,12 +252,12 @@ class ChatController {
               <p class="text-sm text-gray-400">${music.description || music.category}</p>
             </div>
             <div class="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400">
-              <i data-lucide="music" style="width:20px; height:20px;"></i>
+              <i data-lucide="music" style="width:10px; height:10px;"></i>
             </div>
           </div>
 
           <div class="flex gap-3 mt-4">
-            <button class="btn-play-music flex-1 bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-2 px-4 rounded-full flex items-center justify-center gap-2 transition-all"
+            <button class="btn-play-music flex-1 bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-2 px-2 rounded-full flex items-center justify-center gap-2 transition-all"
               data-id="${music.id || ''}"
               data-title="${safeTitle}"
               data-category="${safeCategory}"
@@ -263,6 +269,7 @@ class ChatController {
 
             <button class="btn-another-music w-12 h-10 rounded-full border border-white/20 hover:bg-white/10 flex items-center justify-center text-white transition-all"
               data-goal="${originalGoal}"
+              data-last-music-id="${music.id || ''}"
               title="Quero outra sugestão">
               <i data-lucide="refresh-cw" style="width:18px; height:18px;"></i>
             </button>
@@ -302,8 +309,8 @@ class ChatController {
     }
   }
 
-  handleAnotherMusic(goal) {
-    this.processResponse(goal);
+  handleAnotherMusic(goal, lastMusicId) {
+    this.processResponse(goal, lastMusicId);
   }
 
   updateTimerMode(message) {

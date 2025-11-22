@@ -152,7 +152,7 @@ class PlayerController {
 
     // Pause YouTube if playing
     if (this.ytPlayer && this.isYouTubeReady) {
-      try { this.ytPlayer.pauseVideo(); } catch (e) {}
+      try { this.ytPlayer.pauseVideo(); } catch (e) { }
     }
 
     if (window.lucide) lucide.createIcons();
@@ -196,7 +196,7 @@ class PlayerController {
     this.audio.volume = this.volume;
 
     if (this.ytPlayer && this.isYouTubeReady) {
-      try { this.ytPlayer.setVolume(this.volume * 100); } catch (e) {}
+      try { this.ytPlayer.setVolume(this.volume * 100); } catch (e) { }
     }
   }
 
