@@ -5,8 +5,8 @@
 
 class MusicService {
     constructor() {
-        this.API_URL = 'http://localhost:8080';
-        this.USE_MOCK = true; // Set to false when backend is ready
+        this.API_URL = 'http://localhost:8080/api';
+        this.USE_MOCK = false; // Disabled mock to use real backend
     }
 
     /**
@@ -31,20 +31,19 @@ class MusicService {
     /**
      * Fetch music suggestions based on user goal
      * @param {string} goal - User's intention
-     * @param {number|null} lastMusicId - ID of last played music
      * @returns {Promise<Array>} List of suggestions
      */
-    async getSuggestions(goal, lastMusicId = null) {
+    async getSuggestions(goal) {
         if (this.USE_MOCK) {
             return this.getMockSuggestions(goal);
         }
 
         try {
             const payload = {
-                goal: goal,
-                lastMusicId: lastMusicId ? parseInt(lastMusicId) : null
+                goal: goal
             };
 
+            // Updated endpoint to match user screenshot
             const response = await fetch(`${this.API_URL}/chat/suggestions`, {
                 method: 'POST',
                 headers: {
@@ -64,23 +63,34 @@ class MusicService {
     // Mock Data Generators
     getMockPlaylist() {
         return Promise.resolve([
-            { title: "Lo-Fi Focus", description: "Beats para concentração", url: "assets/music/lofi.mp3", category: "Foco" },
-            { title: "Rain Sounds", description: "Sons de chuva relaxantes", url: "assets/music/rain.mp3", category: "Relax" },
-            { title: "Classical Flow", description: "Piano suave", url: "assets/music/classical.mp3", category: "Estudo" }
+            { title: "Lo-Fi Focus", description: "Beats para concentração", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", category: "Foco" },
+            { title: "Rain Sounds", description: "Sons de chuva relaxantes", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", category: "Relax" },
+            { title: "Classical Flow", description: "Piano suave", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", category: "Estudo" }
         ]);
     }
 
     getMockSuggestions(goal) {
         return new Promise(resolve => {
             setTimeout(() => {
-                const suggestions = [
-                    { id: 1, title: "Lo-Fi Study Beats", description: "Batidas calmas para foco intenso.", category: "Foco", url: "music1.mp3" },
-                    { id: 2, title: "Nature Sounds", description: "Sons de chuva e floresta.", category: "Relax", url: "music2.mp3" },
-                    { id: 3, title: "Deep Focus Alpha", description: "Ondas alpha para concentração.", category: "Foco", url: "music3.mp3" },
-                    { id: 4, title: "Piano Ambient", description: "Piano suave para leitura.", category: "Estudo", url: "music4.mp3" }
+                // Simulate filtering based on goal (simple mock logic)
+                const allSuggestions = [
+                    { id: 1, title: "Lo-Fi Study Beats", description: "Batidas calmas para foco intenso.", category: "Foco", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+                    { id: 2, title: "Nature Sounds", description: "Sons de chuva e floresta.", category: "Relax", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+                    { id: 3, title: "Deep Focus Alpha", description: "Ondas alpha para concentração.", category: "Foco", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+                    { id: 4, title: "Rock Classics", description: "Energia para o trabalho.", category: "Rock", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" }
                 ];
-                const random = suggestions[Math.floor(Math.random() * suggestions.length)];
-                resolve([random]);
+
+                let filtered = allSuggestions;
+                if (goal && goal.toLowerCase().includes('rock')) {
+                    filtered = allSuggestions.filter(m => m.category === 'Rock');
+                } else if (goal && (goal.toLowerCase().includes('foco') || goal.toLowerCase().includes('estudo'))) {
+                    filtered = allSuggestions.filter(m => m.category === 'Foco');
+                }
+
+                // Return random if no match or empty filter
+                if (filtered.length === 0) filtered = [allSuggestions[0]];
+
+                resolve(filtered);
             }, 500);
         });
     }

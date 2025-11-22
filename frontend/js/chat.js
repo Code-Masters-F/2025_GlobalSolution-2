@@ -38,7 +38,7 @@ class ChatController {
         if (target.classList.contains('btn-play-music')) {
           this.handlePlayMusic(target.dataset);
         } else if (target.classList.contains('btn-another-music')) {
-          this.handleAnotherMusic(target.dataset.goal, target.dataset.lastId);
+          this.handleAnotherMusic(target.dataset.goal);
         }
       });
     }
@@ -75,19 +75,27 @@ class ChatController {
     if (window.lucide) lucide.createIcons();
   }
 
-  async processResponse(userMessage, lastMusicId = null) {
+  async processResponse(userMessage) {
     this.showTypingIndicator();
 
     try {
-      const suggestions = await this.fetchSuggestions(userMessage, lastMusicId);
+      // Use ChatService to fetch suggestions
+      const suggestions = await this.fetchSuggestions(userMessage);
       this.removeTypingIndicator();
 
       if (suggestions && suggestions.length > 0) {
+        // Simulate LLM response
+        const intro = this.getLLMIntro(userMessage, suggestions.length);
+        this.addMessage(intro, 'ai');
+
+        // Render first suggestion as a card
         const music = suggestions[0];
         this.renderMusicCard(music, userMessage);
+
+        // Update timer mode based on context
         this.updateTimerMode(userMessage);
       } else {
-        this.addMessage("Não encontrei sugestões específicas, mas tente 'foco' ou 'relaxar'.", 'ai');
+        this.addMessage("Não encontrei músicas específicas para isso no momento. Que tal tentar 'foco' ou 'rock'?", 'ai');
       }
 
     } catch (error) {
@@ -95,6 +103,14 @@ class ChatController {
       this.removeTypingIndicator();
       this.addMessage("Desculpe, tive um problema ao conectar com minha inteligência musical. Tente novamente.", 'ai');
     }
+  }
+
+  getLLMIntro(userMessage, count) {
+    const lowerMsg = userMessage.toLowerCase();
+    if (lowerMsg.includes('rock')) return `Encontrei ${count} músicas de Rock para energizar seu dia! Aqui está uma sugestão:`;
+    if (lowerMsg.includes('foco')) return `Para ajudar no seu foco, selecionei ${count} faixas especiais. Comece com esta:`;
+    if (lowerMsg.includes('relax')) return `Hora de relaxar. Encontrei ${count} músicas tranquilas para você:`;
+    return `Entendi! Com base no seu pedido, encontrei ${count} músicas que podem combinar. Confira:`;
   }
 
   async fetchSuggestions(goal, lastMusicId) {
@@ -109,12 +125,11 @@ class ChatController {
   renderMusicCard(music, originalGoal) {
     const cardHtml = `
       <div class="music-suggestion-card">
-        <p>Aqui está uma sugestão para você:</p>
         <div class="glass-card p-4 mt-3 mb-2" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);">
           <div class="flex items-center justify-between mb-3">
             <div>
               <h4 class="font-bold text-lg text-white">${music.title}</h4>
-              <p class="text-sm text-gray-400">${music.description}</p>
+              <p class="text-sm text-gray-400">${music.description || music.category}</p>
             </div>
             <div class="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400">
               <i data-lucide="music" style="width:20px; height:20px;"></i>
@@ -133,7 +148,6 @@ class ChatController {
             
             <button class="btn-another-music w-12 h-10 rounded-full border border-white/20 hover:bg-white/10 flex items-center justify-center text-white transition-all"
               data-goal="${originalGoal}" 
-              data-last-id="${music.id}"
               title="Quero outra sugestão">
               <i data-lucide="refresh-cw" style="width:18px; height:18px;"></i>
             </button>
@@ -156,17 +170,12 @@ class ChatController {
         window.player.loadTrack(track);
       } else {
         console.error('Player does not support loadTrack');
-        // Fallback
-        const titleEl = document.getElementById('player-title');
-        const descEl = document.getElementById('player-description');
-        if (titleEl) titleEl.textContent = track.title;
-        if (descEl) descEl.textContent = track.description;
       }
     }
   }
 
-  handleAnotherMusic(goal, lastId) {
-    this.processResponse(goal, lastId);
+  handleAnotherMusic(goal) {
+    this.processResponse(goal);
   }
 
   updateTimerMode(message) {

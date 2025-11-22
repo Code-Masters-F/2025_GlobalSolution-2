@@ -2,7 +2,13 @@ class PlayerController {
   constructor() {
     this.isPlaying = false;
     this.currentTrackIndex = 0;
-    this.tracks = []; // Will be populated by MusicService
+    this.tracks = [];
+
+    // Audio Engines
+    this.audio = new Audio();
+    this.ytPlayer = null;
+    this.isYouTubeReady = false;
+    this.currentMode = 'none'; // 'audio' or 'youtube'
 
     // DOM Elements
     this.playBtn = document.getElementById('player-play');
@@ -17,7 +23,43 @@ class PlayerController {
 
   async init() {
     this.setupEventListeners();
+    this.loadYouTubeAPI();
     await this.loadPlaylist();
+  }
+
+  loadYouTubeAPI() {
+    if (!window.YT) {
+      const tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // Create hidden container for YT player
+      const ytContainer = document.createElement('div');
+      ytContainer.id = 'yt-player-container';
+      ytContainer.style.position = 'absolute';
+      ytContainer.style.top = '-9999px';
+      ytContainer.style.left = '-9999px';
+      document.body.appendChild(ytContainer);
+
+      window.onYouTubeIframeAPIReady = () => {
+        this.ytPlayer = new YT.Player('yt-player-container', {
+          height: '0',
+          width: '0',
+          events: {
+            'onReady': () => { this.isYouTubeReady = true; },
+            'onStateChange': (event) => this.onPlayerStateChange(event)
+          }
+        });
+      };
+    }
+  }
+
+  onPlayerStateChange(event) {
+    // Sync YT state with UI
+    if (event.data === YT.PlayerState.ENDED) {
+      this.nextTrack();
+    }
   }
 
   async loadPlaylist() {
@@ -40,6 +82,9 @@ class PlayerController {
     this.playBtn?.addEventListener('click', () => this.togglePlay());
     this.prevBtn?.addEventListener('click', () => this.prevTrack());
     this.nextBtn?.addEventListener('click', () => this.nextTrack());
+
+    // Standard Audio Events
+    this.audio.addEventListener('ended', () => this.nextTrack());
   }
 
   enableControls() {
@@ -54,6 +99,18 @@ class PlayerController {
     this.isPlaying = !this.isPlaying;
     this.updateControls();
 
+    // Playback Logic
+    if (this.currentMode === 'youtube' && this.ytPlayer && this.isYouTubeReady) {
+      if (this.isPlaying) this.ytPlayer.playVideo();
+      else this.ytPlayer.pauseVideo();
+    } else if (this.currentMode === 'audio') {
+      if (this.isPlaying) this.audio.play();
+      else this.audio.pause();
+    } else {
+      // First play or track change needed
+      this.playTrack(this.tracks[this.currentTrackIndex]);
+    }
+
     // Update icon
     if (this.playBtn) {
       this.playBtn.innerHTML = this.isPlaying
@@ -62,30 +119,51 @@ class PlayerController {
 
       if (window.lucide) lucide.createIcons();
     }
+  }
 
-    // Add to history if playing
-    if (this.isPlaying && window.HistorySystem) {
-      const currentTrack = this.tracks[this.currentTrackIndex];
-      window.HistorySystem.addToHistory(currentTrack);
+  playTrack(track) {
+    // Stop previous
+    this.audio.pause();
+    if (this.ytPlayer && this.isYouTubeReady) this.ytPlayer.stopVideo();
+
+    const url = track.url;
+
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      this.currentMode = 'youtube';
+      const videoId = this.extractVideoID(url);
+      if (this.ytPlayer && this.isYouTubeReady && videoId) {
+        this.ytPlayer.loadVideoById(videoId);
+        if (this.isPlaying) this.ytPlayer.playVideo();
+      }
+    } else {
+      this.currentMode = 'audio';
+      this.audio.src = url;
+      if (this.isPlaying) this.audio.play();
     }
+  }
+
+  extractVideoID(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
   }
 
   prevTrack() {
     if (this.tracks.length === 0) return;
     this.currentTrackIndex = (this.currentTrackIndex - 1 + this.tracks.length) % this.tracks.length;
     this.updateDisplay();
-    if (this.isPlaying) {
-      // restart playing logic would go here
-    }
+    this.playTrack(this.tracks[this.currentTrackIndex]);
+    this.isPlaying = true;
+    this.updateControls();
   }
 
   nextTrack() {
     if (this.tracks.length === 0) return;
     this.currentTrackIndex = (this.currentTrackIndex + 1) % this.tracks.length;
     this.updateDisplay();
-    if (this.isPlaying) {
-      // restart playing logic would go here
-    }
+    this.playTrack(this.tracks[this.currentTrackIndex]);
+    this.isPlaying = true;
+    this.updateControls();
   }
 
   updateDisplay() {
@@ -97,18 +175,19 @@ class PlayerController {
   }
 
   updateControls() {
-    // Visual feedback for playing state
     if (this.playBtn) {
       this.playBtn.classList.toggle('playing', this.isPlaying);
+      this.playBtn.innerHTML = this.isPlaying
+        ? '<i data-lucide="pause"></i>'
+        : '<i data-lucide="play"></i>';
+      if (window.lucide) lucide.createIcons();
     }
   }
 
   loadTrack(track) {
-    // Check if track is already in the list
     let index = this.tracks.findIndex(t => t.title === track.title);
 
     if (index === -1) {
-      // Add to tracks if not present
       this.tracks.push(track);
       index = this.tracks.length - 1;
     }
@@ -117,13 +196,12 @@ class PlayerController {
     this.updateDisplay();
     this.enableControls();
 
-    if (!this.isPlaying) {
-      this.togglePlay();
-    } else {
-      // If already playing, just ensure history is updated if needed
-      if (window.HistorySystem) {
-        window.HistorySystem.addToHistory(track);
-      }
+    this.isPlaying = true;
+    this.updateControls();
+    this.playTrack(track);
+
+    if (window.HistorySystem) {
+      window.HistorySystem.addToHistory(track);
     }
   }
 }
