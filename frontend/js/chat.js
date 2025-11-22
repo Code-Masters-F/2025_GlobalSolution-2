@@ -94,9 +94,10 @@ class ChatController {
         const intro = this.getLLMIntro(userMessage, suggestions.length);
         this.addMessage(intro, 'ai');
 
-        // Render first suggestion as a card
-        const music = suggestions[0];
-        this.renderMusicCard(music, userMessage);
+        // Render all suggestions as cards
+        suggestions.forEach(music => {
+          this.renderMusicCard(music, userMessage);
+        });
 
         // Update timer mode based on context
         this.updateTimerMode(userMessage);
