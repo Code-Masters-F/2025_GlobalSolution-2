@@ -1,118 +1,103 @@
--- ============================================================
--- 1. INSERINDO USUÁRIOS (3 registros)
--- ============================================================
-INSERT INTO FW_USER_PROFILE (name, email, password)
-VALUES ('Lucas Silva', 'lucas.silva@gmail.com', 'senhaSegura123');
+-- 1. Inserindo Usuários Fictícios (FW_User_Profile)
+INSERT INTO FW_User_Profile (name, email, password)
+VALUES ('João Silva', 'joao.silva@email.com', 'senha123');
 
-INSERT INTO FW_USER_PROFILE (name, email, password)
-VALUES ('Mariana Costa', 'mari.costa@outlook.com', 'gatos123');
+INSERT INTO FW_User_Profile (name, email, password)
+VALUES ('Maria Oliveira', 'maria.dev@email.com', 'segredo456');
 
-INSERT INTO FW_USER_PROFILE (name, email, password)
-VALUES ('Pedro Alencar', 'pedro.dev@tech.com', 'root');
+INSERT INTO FW_User_Profile (name, email, password)
+VALUES ('Carlos Tech', 'carlos.admin@email.com', 'admin789');
 
--- ============================================================
--- 2. INSERINDO MÚSICAS (10 registros - Variedade de categorias)
--- ============================================================
-INSERT INTO FW_MUSIC (title, description, category, url)
-VALUES ('Bohemian Rhapsody', 'Clássico do Queen, álbum A Night at the Opera', 'Rock', 'https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
 
-INSERT INTO FW_MUSIC (title, description, category, url)
-VALUES ('Shape of You', 'Hit de Ed Sheeran', 'Pop', 'https://www.youtube.com/watch?v=JGwWNGJdvx8');
+-- 2. Inserindo as Músicas da Imagem (FW_Music)
+-- A URL segue o padrão: https://emperorofcoding.github.io/Audios-test/audios/ + nome_arquivo
 
-INSERT INTO FW_MUSIC (title, description, category, url)
-VALUES ('Garota de Ipanema', 'Tom Jobim e Vinícius de Moraes', 'Bossa Nova', 'https://www.youtube.com/watch?v=KJzBxJ8ExRk');
+INSERT INTO FW_Music (title, description, url, category)
+VALUES (
+           'Canto dos Pássaros',
+           'Som ambiente de pássaros na floresta para relaxamento.',
+           'https://emperorofcoding.github.io/Audios-test/audios/birds.mp3',
+           'Natureza'
+       );
 
-INSERT INTO FW_MUSIC (title, description, category, url)
-VALUES ('Hotel California', 'Eagles - Live MTV', 'Rock', 'https://www.youtube.com/watch?v=X7usA3YouKw');
+INSERT INTO FW_Music (title, description, url, category)
+VALUES (
+           'Sons de Tigela de Metal',
+           'Vibrações sonoras de tigelas tibetanas para meditação profunda.',
+           'https://emperorofcoding.github.io/Audios-test/audios/bowlSoundsmetal.mp3',
+           'Meditação'
+       );
 
-INSERT INTO FW_MUSIC (title, description, category, url)
-VALUES ('Smells Like Teen Spirit', 'Nirvana - Nevermind', 'Grunge', 'https://www.youtube.com/watch?v=hTWKbfoikeg');
+INSERT INTO FW_Music (title, description, url, category)
+VALUES (
+           'Dança do Dragão Chinês',
+           'Música tradicional festiva chinesa.',
+           'https://emperorofcoding.github.io/Audios-test/audios/dancaDodragaoChines.mp3',
+           'Cultura'
+       );
 
-INSERT INTO FW_MUSIC (title, description, category, url)
-VALUES ('Billie Jean', 'Michael Jackson - Thriller', 'Pop', 'https://www.youtube.com/watch?v=Zi_XLOBDo_Y');
+INSERT INTO FW_Music (title, description, url, category)
+VALUES (
+           'Chuva Binaural',
+           'Som de chuva com frequências binaurais para foco e estudo.',
+           'https://emperorofcoding.github.io/Audios-test/audios/rain_binaural.mp3',
+           'Foco'
+       );
 
-INSERT INTO FW_MUSIC (title, description, category, url)
-VALUES ('Construção', 'Chico Buarque', 'MPB', 'https://www.youtube.com/watch?v=wBfVsucRe1w');
+INSERT INTO FW_Music (title, description, url, category)
+VALUES (
+           'Viagem de Trem',
+           'Ambiente sonoro de uma viagem tranquila de trem.',
+           'https://emperorofcoding.github.io/Audios-test/audios/trainTripSounds.mp3',
+           'ASMR'
+       );
 
-INSERT INTO FW_MUSIC (title, description, category, url)
-VALUES ('Symphony No. 9', 'Beethoven', 'Clássica', 'https://www.youtube.com/watch?v=4IqnVCc-Yqo');
 
-INSERT INTO FW_MUSIC (title, description, category, url)
-VALUES ('Enter Sandman', 'Metallica', 'Metal', 'https://www.youtube.com/watch?v=CD-E-LDc384');
-
-INSERT INTO FW_MUSIC (title, description, category, url)
-VALUES ('Rolling in the Deep', 'Adele - 21', 'Pop', 'https://www.youtube.com/watch?v=rYEDA3JcQqw');
-
--- ============================================================
--- 3. INSERINDO HISTÓRICO (20 registros)
--- ============================================================
--- Obs: SYSDATE é a data/hora atual.
--- SYSDATE - 1 significa "ontem". SYSDATE - (1/24) significa "1 hora atrás".
-
--- Usuário 1 (Lucas)
-INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (1, 1, SYSTIMESTAMP - INTERVAL '5' DAY);
-
-INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (1, 4, SYSTIMESTAMP - INTERVAL '4' DAY);
-
-INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (1, 5, SYSTIMESTAMP - INTERVAL '4' DAY);
+-- 3. Inserindo Histórico de Reprodução (FW_MUSIC_HISTORY)
 
 INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (1, 9, SYSTIMESTAMP - INTERVAL '3' DAY);
+VALUES (1, 1, SYSTIMESTAMP - 2); -- Ouviu 2 dias atrás
 
 INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (1, 1, SYSTIMESTAMP - INTERVAL '1' DAY);
+VALUES (1, 4, SYSTIMESTAMP - 1); -- Ouviu 1 dia atrás
+
+-- Maria (ID 2) ouviu "Dança do Dragão" (ID 3)
+INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
+VALUES (2, 3, SYSTIMESTAMP - 0.5); -- Ouviu 12 horas atrás
 
 INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (1, 5, SYSTIMESTAMP - INTERVAL '1' HOUR);
--- Nirvana (agora pouco)
-
--- Usuário 2 (Mariana)
-INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (2, 2, SYSTIMESTAMP - INTERVAL '10' DAY);
+VALUES (2, 5, SYSTIMESTAMP); -- Ouviu agora
 
 INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (2, 6, SYSTIMESTAMP - INTERVAL '9' DAY);
+VALUES (3, 2, SYSTIMESTAMP - 5);
 
 INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (2, 10, SYSTIMESTAMP - INTERVAL '8' DAY);
+VALUES (1, 1, SYSTIMESTAMP - 3); -- Ouviu "Birds" há 3 dias
 
 INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (2, 3, SYSTIMESTAMP - INTERVAL '2' DAY);
+VALUES (1, 4, SYSTIMESTAMP - 1); -- Ouviu "Rain Binaural" ontem
 
 INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (2, 7, SYSTIMESTAMP - INTERVAL '1' DAY);
+VALUES (1, 5, SYSTIMESTAMP - 0.04); -- Ouviu "Train Trip" há cerca de 1 hora (0.04 de um dia)
+
 
 INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (2, 2, SYSTIMESTAMP - INTERVAL '5' HOUR);
+VALUES (2, 3, SYSTIMESTAMP - 5); -- Ouviu "Dança do Dragão" há 5 dias
 
 INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (2, 10, SYSTIMESTAMP - INTERVAL '2' HOUR);
--- Adele (de novo)
-
--- Usuário 3 (Pedro)
-INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (3, 8, SYSTIMESTAMP - INTERVAL '20' DAY);
+VALUES (2, 3, SYSTIMESTAMP - 2); -- Ouviu "Dança do Dragão" de novo há 2 dias (repetiu a música)
 
 INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (3, 1, SYSTIMESTAMP - INTERVAL '15' DAY);
+VALUES (2, 5, SYSTIMESTAMP - 0.5); -- Ouviu "Train Trip" há 12 horas
+
 
 INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (3, 3, SYSTIMESTAMP - INTERVAL '12' DAY);
+VALUES (3, 2, SYSTIMESTAMP - 10); -- Ouviu "Bowl Sounds" semana passada
 
 INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (3, 9, SYSTIMESTAMP - INTERVAL '5' DAY);
+VALUES (3, 4, SYSTIMESTAMP); -- Está ouvindo "Rain Binaural" agora mesmo
 
-INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (3, 6, SYSTIMESTAMP - INTERVAL '3' DAY);
+COMMIT;
 
-INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (3, 8, SYSTIMESTAMP - INTERVAL '1' DAY);
-
-INSERT INTO FW_MUSIC_HISTORY (id_user_profile, id_music, played_at)
-VALUES (3, 7, SYSTIMESTAMP);
--- Chico Buarque (agora)
 
 COMMIT;
