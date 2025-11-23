@@ -54,9 +54,11 @@ public class ChatService {
         }
 
         // Converter Music → MusicSuggestionDTO
+        // Retorna apenas 1 música para não sobrecarregar o usuário
         List<MusicSuggestionDTO> suggestions = new ArrayList<>();
 
-        for (Music m : all) {
+        if (!all.isEmpty()) {
+            Music m = all.get(0);
             suggestions.add(new MusicSuggestionDTO(
                     m.getId(),
                     m.getTitle(),
@@ -73,115 +75,82 @@ public class ChatService {
      * Detecta a intenção baseada no texto enviado pelo usuário.
      * Simula comportamento de uma LLM mapeando palavras-chave para categorias.
      *
-     * Categorias disponíveis no banco: Rock, Pop, Bossa Nova, MPB, Clássica, Metal, Grunge
+     * Categorias disponíveis no banco: Natureza, Meditação, Cultura, Foco, ASMR
      */
     private String detectIntent(String text) {
 
         text = text.toLowerCase();
 
         // =====================================================
-        // ROCK - energia, animação, guitarra
+        // FOCO - estudar, concentrar, trabalhar, produtivo
         // =====================================================
-        if (text.contains("rock") || text.contains("guitarra") ||
-            text.contains("energia") || text.contains("animado") ||
-            text.contains("agitado") || text.contains("queen") ||
-            text.contains("eagles") || text.contains("classic rock")) {
-            return "Rock";
+        if (text.contains("foco") || text.contains("focar") ||
+            text.contains("focus") || text.contains("estudar") ||
+            text.contains("estudando") || text.contains("estudo") ||
+            text.contains("concentrar") || text.contains("concentração") ||
+            text.contains("trabalhar") || text.contains("trabalho") ||
+            text.contains("produtivo") || text.contains("produtividade") ||
+            text.contains("ler") || text.contains("leitura") ||
+            text.contains("profundo") || text.contains("profundamente") ||
+            text.contains("binaural") || text.contains("chuva")) {
+            return "Foco";
         }
 
         // =====================================================
-        // POP - hits, moderno, dançar, alegre
+        // MEDITAÇÃO - relaxar, calmo, meditar, paz
         // =====================================================
-        if (text.contains("pop") || text.contains("hit") || text.contains("hits") ||
-            text.contains("moderno") || text.contains("atual") ||
-            text.contains("dançar") || text.contains("dança") ||
-            text.contains("alegre") || text.contains("feliz") ||
-            text.contains("ed sheeran") || text.contains("adele") ||
-            text.contains("michael jackson") || text.contains("animada")) {
-            return "Pop";
-        }
-
-        // =====================================================
-        // BOSSA NOVA - relaxar, calmo, suave, violão
-        // =====================================================
-        if (text.contains("bossa") || text.contains("bossa nova") ||
-            text.contains("violão") || text.contains("suave") ||
+        if (text.contains("meditação") || text.contains("meditacao") ||
+            text.contains("meditar") || text.contains("meditation") ||
             text.contains("relaxar") || text.contains("relax") ||
             text.contains("calmo") || text.contains("calma") ||
             text.contains("tranquilo") || text.contains("tranquila") ||
-            text.contains("descansar") || text.contains("paz") ||
-            text.contains("tom jobim") || text.contains("ipanema") ||
-            text.contains("acalmar") || text.contains("leve")) {
-            return "Bossa Nova";
+            text.contains("paz") || text.contains("acalmar") ||
+            text.contains("respirar") || text.contains("zen") ||
+            text.contains("tigela") || text.contains("singing bowl")) {
+            return "Meditação";
         }
 
         // =====================================================
-        // MPB - brasileiro, Brasil, saudade
+        // NATUREZA - sons naturais, floresta, pássaros, ambiente
         // =====================================================
-        if (text.contains("mpb") || text.contains("brasileira") ||
-            text.contains("brasileiro") || text.contains("brasil") ||
-            text.contains("saudade") || text.contains("chico buarque") ||
-            text.contains("nacional") || text.contains("samba")) {
-            return "MPB";
+        if (text.contains("natureza") || text.contains("nature") ||
+            text.contains("floresta") || text.contains("forest") ||
+            text.contains("pássaro") || text.contains("passaro") ||
+            text.contains("birds") || text.contains("ambiente") ||
+            text.contains("ambience") || text.contains("rio") ||
+            text.contains("mar") || text.contains("ocean") ||
+            text.contains("vento") || text.contains("wind")) {
+            return "Natureza";
         }
 
         // =====================================================
-        // CLÁSSICA - foco, estudar, concentrar, piano, orquestra
+        // CULTURA - músicas culturais, étnicas, tradicionais
         // =====================================================
-        if (text.contains("classica") || text.contains("clássica") ||
-            text.contains("classical") || text.contains("orquestra") ||
-            text.contains("violin") || text.contains("violino") ||
-            text.contains("piano") || text.contains("beethoven") ||
-            text.contains("mozart") || text.contains("bach") ||
-            text.contains("foco") || text.contains("focar") ||
-            text.contains("focus") || text.contains("estudar") ||
-            text.contains("estudando") || text.contains("estudo") ||
-            text.contains("concentrar") || text.contains("trabalhar") ||
-            text.contains("trabalho") || text.contains("produtivo") ||
-            text.contains("ler") || text.contains("leitura") ||
-            text.contains("profundo") || text.contains("profundamente")) {
-            return "Clássica";
+        if (text.contains("cultura") || text.contains("cultural") ||
+            text.contains("chinês") || text.contains("chines") ||
+            text.contains("japones") || text.contains("japonês") ||
+            text.contains("oriental") || text.contains("tradicional") ||
+            text.contains("étnico") || text.contains("etnico") ||
+            text.contains("world music") || text.contains("dragão")) {
+            return "Cultura";
         }
 
         // =====================================================
-        // METAL - pesado, intenso, agressivo
+        // ASMR - sons relaxantes, sussurros, triggers
         // =====================================================
-        if (text.contains("metal") || text.contains("heavy") ||
-            text.contains("metallica") || text.contains("pesado") ||
-            text.contains("intenso") || text.contains("forte") ||
-            text.contains("agressivo") || text.contains("iron maiden")) {
-            return "Metal";
-        }
-
-        // =====================================================
-        // GRUNGE - anos 90, nirvana, alternativo
-        // =====================================================
-        if (text.contains("grunge") || text.contains("nirvana") ||
-            text.contains("anos 90") || text.contains("90s") ||
-            text.contains("noventa") || text.contains("alternativo") ||
-            text.contains("seattle") || text.contains("pearl jam") ||
-            text.contains("nostalgia") || text.contains("nostalgico")) {
-            return "Grunge";
+        if (text.contains("asmr") || text.contains("sussurro") ||
+            text.contains("whisper") || text.contains("trigger") ||
+            text.contains("trem") || text.contains("train") ||
+            text.contains("viagem") || text.contains("dormir") ||
+            text.contains("sono") || text.contains("sleep") ||
+            text.contains("soneca") || text.contains("descanso") ||
+            text.contains("noite")) {
+            return "ASMR";
         }
 
         // =====================================================
         // CONTEXTOS GENÉRICOS
         // =====================================================
-
-        // Dormir/Sono → Bossa Nova (mais calmo)
-        if (text.contains("sono") || text.contains("dormir") ||
-            text.contains("sleep") || text.contains("soneca") ||
-            text.contains("descanso") || text.contains("noite")) {
-            return "Bossa Nova";
-        }
-
-        // Exercício/Treino → Rock
-        if (text.contains("treino") || text.contains("treinar") ||
-            text.contains("academia") || text.contains("malhar") ||
-            text.contains("correr") || text.contains("gym") ||
-            text.contains("workout")) {
-            return "Rock";
-        }
 
         // Música/Genérico → retorna todas
         if (text.contains("música") || text.contains("musica") ||

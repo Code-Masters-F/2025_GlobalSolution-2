@@ -115,94 +115,58 @@ class ChatController {
   getLLMIntro(userMessage, count) {
     const msg = userMessage.toLowerCase();
 
-    // Rock
-    if (msg.includes('rock') || msg.includes('guitarra') || msg.includes('energia') || msg.includes('animado')) {
-      const responses = [
-        `Rock and Roll! Encontrei ${count} músicas para te dar energia. Começa com essa:`,
-        `Hora de soltar a guitarra! Separei ${count} clássicos do rock pra você:`,
-        `Energia no máximo! Tenho ${count} músicas de rock perfeitas para o momento:`
-      ];
-      return responses[Math.floor(Math.random() * responses.length)];
-    }
-
-    // Pop
-    if (msg.includes('pop') || msg.includes('hit') || msg.includes('dançar') || msg.includes('alegre') || msg.includes('feliz')) {
-      const responses = [
-        `Pop hits chegando! Encontrei ${count} músicas animadas pra você:`,
-        `Hora de dançar! Selecionei ${count} hits pop especiais:`,
-        `Música pra levantar o astral! Aqui estão ${count} opções:`
-      ];
-      return responses[Math.floor(Math.random() * responses.length)];
-    }
-
-    // Bossa Nova / Relaxar
-    if (msg.includes('bossa') || msg.includes('relaxar') || msg.includes('relax') || msg.includes('calmo') ||
-      msg.includes('tranquilo') || msg.includes('descansar') || msg.includes('paz') || msg.includes('suave')) {
-      const responses = [
-        `Momento de paz... Separei ${count} músicas suaves pra você relaxar:`,
-        `Hora de desacelerar. Encontrei ${count} faixas tranquilas:`,
-        `Relaxa que a vida é boa! Tenho ${count} músicas calmas perfeitas:`
-      ];
-      return responses[Math.floor(Math.random() * responses.length)];
-    }
-
-    // MPB / Brasileiro
-    if (msg.includes('mpb') || msg.includes('brasil') || msg.includes('brasileiro') || msg.includes('saudade')) {
-      const responses = [
-        `MPB de qualidade! Encontrei ${count} músicas brasileiras pra você:`,
-        `Saudade do Brasil? Separei ${count} clássicos da MPB:`,
-        `Música brasileira de primeira! Aqui estão ${count} opções:`
-      ];
-      return responses[Math.floor(Math.random() * responses.length)];
-    }
-
-    // Clássica / Foco / Estudar
+    // FOCO - estudar, concentrar, trabalhar
     if (msg.includes('foco') || msg.includes('focar') || msg.includes('estudar') || msg.includes('trabalhar') ||
-      msg.includes('concentrar') || msg.includes('classica') || msg.includes('piano') || msg.includes('produtivo')) {
+      msg.includes('concentrar') || msg.includes('produtivo') || msg.includes('binaural') || msg.includes('chuva')) {
       const responses = [
-        `Modo foco ativado! Selecionei ${count} músicas para concentração máxima:`,
+        `Modo foco ativado! Selecionei ${count} sons para concentração máxima:`,
         `Hora de produzir! Encontrei ${count} faixas perfeitas para estudar:`,
-        `Concentração total! Tenho ${count} músicas clássicas para você focar:`
+        `Concentração total! Tenho ${count} sons binaurais para você focar:`
       ];
       return responses[Math.floor(Math.random() * responses.length)];
     }
 
-    // Metal
-    if (msg.includes('metal') || msg.includes('heavy') || msg.includes('pesado') || msg.includes('intenso')) {
+    // MEDITAÇÃO - relaxar, calmo, meditar
+    if (msg.includes('meditação') || msg.includes('meditar') || msg.includes('relaxar') || msg.includes('relax') ||
+      msg.includes('calmo') || msg.includes('tranquilo') || msg.includes('paz') || msg.includes('zen') ||
+      msg.includes('tigela') || msg.includes('respirar')) {
       const responses = [
-        `Heavy Metal! Encontrei ${count} músicas pesadas pra você:`,
-        `Intensidade no máximo! Separei ${count} faixas de metal:`,
-        `Hora do peso! Aqui estão ${count} músicas pra headbang:`
+        `Momento de paz interior... Separei ${count} sons para meditação:`,
+        `Hora de acalmar a mente. Encontrei ${count} faixas tranquilas:`,
+        `Respira fundo! Tenho ${count} sons perfeitos para meditar:`
       ];
       return responses[Math.floor(Math.random() * responses.length)];
     }
 
-    // Grunge / Anos 90
-    if (msg.includes('grunge') || msg.includes('nirvana') || msg.includes('90') || msg.includes('alternativo')) {
+    // NATUREZA - floresta, pássaros, ambiente
+    if (msg.includes('natureza') || msg.includes('floresta') || msg.includes('pássaro') || msg.includes('passaro') ||
+      msg.includes('ambiente') || msg.includes('rio') || msg.includes('mar') || msg.includes('vento')) {
       const responses = [
-        `Voltando aos anos 90! Encontrei ${count} clássicos do grunge:`,
-        `Nostalgia alternativa! Separei ${count} músicas da era grunge:`,
-        `Seattle calling! Tenho ${count} faixas do melhor do grunge:`
+        `Conectando com a natureza! Encontrei ${count} sons ambientes:`,
+        `Sons da natureza chegando! Separei ${count} faixas relaxantes:`,
+        `Hora de se reconectar! Tenho ${count} sons naturais pra você:`
       ];
       return responses[Math.floor(Math.random() * responses.length)];
     }
 
-    // Dormir
-    if (msg.includes('dormir') || msg.includes('sono') || msg.includes('noite')) {
+    // CULTURA - oriental, tradicional
+    if (msg.includes('cultura') || msg.includes('chinês') || msg.includes('oriental') ||
+      msg.includes('tradicional') || msg.includes('dragão') || msg.includes('japones')) {
       const responses = [
-        `Hora de descansar... Separei ${count} músicas relaxantes pra você:`,
+        `Viagem cultural! Encontrei ${count} músicas tradicionais:`,
+        `Sons do mundo! Separei ${count} faixas culturais:`,
+        `Experiência única! Tenho ${count} músicas étnicas pra você:`
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    // ASMR - dormir, sono, trem, viagem
+    if (msg.includes('asmr') || msg.includes('dormir') || msg.includes('sono') || msg.includes('noite') ||
+      msg.includes('trem') || msg.includes('viagem') || msg.includes('sussurro')) {
+      const responses = [
+        `Hora de relaxar... Separei ${count} sons ASMR pra você:`,
         `Boa noite! Encontrei ${count} faixas suaves para embalar seu sono:`,
-        `Relaxa e dorme bem! Aqui estão ${count} músicas calmas:`
-      ];
-      return responses[Math.floor(Math.random() * responses.length)];
-    }
-
-    // Treino
-    if (msg.includes('treino') || msg.includes('academia') || msg.includes('malhar') || msg.includes('exerc')) {
-      const responses = [
-        `Bora treinar! Encontrei ${count} músicas pra bombar seu treino:`,
-        `Energia pro workout! Separei ${count} faixas motivacionais:`,
-        `No pain, no gain! Tenho ${count} músicas pra te dar força:`
+        `Relaxa e descansa! Aqui estão ${count} sons calmantes:`
       ];
       return responses[Math.floor(Math.random() * responses.length)];
     }
@@ -211,19 +175,19 @@ class ChatController {
     if (msg.includes('olá') || msg.includes('oi') || msg.includes('ola') || msg.includes('bom dia') ||
       msg.includes('boa tarde') || msg.includes('boa noite')) {
       const responses = [
-        `Olá! Que bom te ver por aqui. Encontrei ${count} músicas que você pode gostar:`,
-        `Oi! Pronto pra uma boa música? Tenho ${count} sugestões:`,
-        `E aí! Separei ${count} músicas especiais pra você:`
+        `Olá! Que bom te ver por aqui. Encontrei ${count} sons que você pode gostar:`,
+        `Oi! Pronto pra relaxar? Tenho ${count} sugestões:`,
+        `E aí! Separei ${count} sons especiais pra você:`
       ];
       return responses[Math.floor(Math.random() * responses.length)];
     }
 
     // Genérico / Fallback
     const fallbacks = [
-      `Entendi seu pedido! Encontrei ${count} músicas que combinam. Confira:`,
-      `Boa escolha! Separei ${count} músicas pra você:`,
-      `Achei ${count} músicas que você vai curtir. Começa com essa:`,
-      `Pronto! Tenho ${count} sugestões musicais pra você:`
+      `Entendi seu pedido! Encontrei ${count} sons que combinam. Confira:`,
+      `Boa escolha! Separei ${count} faixas pra você:`,
+      `Achei ${count} sons que você vai curtir. Começa com esse:`,
+      `Pronto! Tenho ${count} sugestões sonoras pra você:`
     ];
     return fallbacks[Math.floor(Math.random() * fallbacks.length)];
   }

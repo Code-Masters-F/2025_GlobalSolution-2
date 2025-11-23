@@ -75,23 +75,37 @@ class MusicService {
             setTimeout(() => {
                 // Simulate filtering based on goal (simple mock logic)
                 const allSuggestions = [
-                    { id: 1, title: "Lo-Fi Study Beats", description: "Batidas calmas para foco intenso.", category: "Foco", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-                    { id: 2, title: "Nature Sounds", description: "Sons de chuva e floresta.", category: "Relax", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-                    { id: 3, title: "Deep Focus Alpha", description: "Ondas alpha para concentração.", category: "Foco", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-                    { id: 4, title: "Rock Classics", description: "Energia para o trabalho.", category: "Rock", url: "https://www.soundhelix.com/examples/mp3/SoundH    elix-Song-4.mp3" }
+                    { id: 1, title: "Chuva Binaural", description: "Som de chuva com frequências binaurais para foco e estudo.", category: "Foco", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+                    { id: 2, title: "Sons de Tigela", description: "Vibrações sonoras de tigelas tibetanas para meditação profunda.", category: "Meditação", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+                    { id: 3, title: "Canto dos Pássaros", description: "Som ambiente de pássaros na floresta para relaxamento.", category: "Natureza", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+                    { id: 4, title: "Viagem de Trem", description: "Ambiente sonoro de uma viagem tranquila de trem.", category: "ASMR", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+                    { id: 5, title: "Dança do Dragão", description: "Música tradicional festiva chinesa.", category: "Cultura", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" }
                 ];
 
+                const g = (goal || '').toLowerCase();
                 let filtered = allSuggestions;
-                if (goal && goal.toLowerCase().includes('rock')) {
-                    filtered = allSuggestions.filter(m => m.category === 'Rock');
-                } else if (goal && (goal.toLowerCase().includes('foco') || goal.toLowerCase().includes('estudo'))) {
+
+                // Filtra por categoria baseado no goal
+                if (g.includes('foco') || g.includes('estudar') || g.includes('concentrar') || g.includes('profundo')) {
                     filtered = allSuggestions.filter(m => m.category === 'Foco');
+                } else if (g.includes('relaxar') || g.includes('meditar') || g.includes('calmo') || g.includes('paz')) {
+                    filtered = allSuggestions.filter(m => m.category === 'Meditação');
+                } else if (g.includes('natureza') || g.includes('floresta') || g.includes('pássaro')) {
+                    filtered = allSuggestions.filter(m => m.category === 'Natureza');
+                } else if (g.includes('dormir') || g.includes('sono') || g.includes('asmr') || g.includes('trem')) {
+                    filtered = allSuggestions.filter(m => m.category === 'ASMR');
+                } else if (g.includes('cultura') || g.includes('oriental') || g.includes('chinês')) {
+                    filtered = allSuggestions.filter(m => m.category === 'Cultura');
                 }
 
-                // Return random if no match or empty filter
-                if (filtered.length === 0) filtered = [allSuggestions[0]];
+                // Se não encontrou nada específico, embaralha e pega uma aleatória
+                if (filtered.length === 0) {
+                    filtered = allSuggestions;
+                }
 
-                resolve(filtered);
+                // Embaralha e retorna apenas 1 música
+                filtered.sort(() => Math.random() - 0.5);
+                resolve([filtered[0]]);
             }, 500);
         });
     }

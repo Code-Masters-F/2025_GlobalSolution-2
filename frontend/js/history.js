@@ -137,10 +137,13 @@
       const timeAgo = this.getTimeAgo(item.playedAt);
 
       return `
-        <div class="history-item" data-music-id="${item.id}">
+        <div class="history-item" data-music-id="${item.id}" data-url="${item.url || ''}" data-title="${item.title || ''}" data-category="${item.category || ''}">
+          <div class="history-play-icon">
+            <i data-lucide="play" style="width: 14px; height: 14px;"></i>
+          </div>
           <div class="history-info">
             <span class="track-name">${item.title}</span>
-            <span class="track-artist">${item.description || 'Desconhecido'}</span>
+            <span class="track-artist">${item.category || item.description || ''}</span>
           </div>
           <span class="track-time">${timeAgo}</span>
         </div>
@@ -156,19 +159,34 @@
         item.addEventListener('click', () => {
           const musicId = item.dataset.musicId;
           // Use loose equality to handle string/number id mismatch
-          const music = this.history.find(m => m.id == musicId);
+          let music = this.history.find(m => m.id == musicId);
 
-          if (music && window.player) {
+          // Fallback: se não encontrar no histórico, usa os dados do dataset
+          if (!music || !music.url) {
+            music = {
+              id: musicId,
+              title: item.dataset.title || 'Música',
+              url: item.dataset.url,
+              category: item.dataset.category || ''
+            };
+          }
+
+          if (music && music.url && window.player) {
             if (typeof window.player.loadTrack === 'function') {
               window.player.loadTrack(music);
             } else {
               console.error('Player does not support loadTrack');
             }
           } else {
-            console.warn('Music not found in history or player not initialized', { musicId, music });
+            console.warn('Music URL not found or player not initialized', { musicId, music });
           }
         });
       });
+
+      // Recria ícones Lucide nos novos elementos
+      if (window.lucide) {
+        lucide.createIcons();
+      }
     },
 
     /**

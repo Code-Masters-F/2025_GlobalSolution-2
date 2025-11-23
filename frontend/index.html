@@ -61,9 +61,6 @@
     </div>
 
     <div class="status-bar__actions">
-      <button class="icon-btn" data-modal="history" aria-label="Histórico">
-        <i data-lucide="history"></i>
-      </button>
       <button class="icon-btn" data-modal="login" aria-label="Login">
         <i data-lucide="user"></i>
       </button>
@@ -93,19 +90,19 @@
       <div class="chat-input-area">
         <div class="quick-actions">
           <button class="chip" data-message="Preciso focar profundamente">
-            <i data-lucide="target"></i> Foco Profundo
+            <i data-lucide="brain"></i> Foco
           </button>
-          <button class="chip" data-message="Quero relaxar">
-            <i data-lucide="coffee"></i> Relaxar
+          <button class="chip" data-message="Quero relaxar e meditar">
+            <i data-lucide="heart"></i> Relaxar
           </button>
-          <button class="chip" data-message="Rock">
-            <i data-lucide="music"></i> Rock
+          <button class="chip" data-message="Quero dormir">
+            <i data-lucide="moon"></i> Dormir
           </button>
         </div>
 
         <form class="chat-form" id="chat-form">
           <div class="input-wrapper glass-input">
-            <input type="text" id="chat-input" placeholder="Ex: rock, foco, relaxar, metal..." autocomplete="off">
+            <input type="text" id="chat-input" placeholder="Ex: foco, meditar, natureza, dormir..." autocomplete="off">
             <button type="submit" class="send-btn" aria-label="Enviar">
               <i data-lucide="arrow-up"></i>
             </button>
@@ -117,27 +114,11 @@
     <!-- Right: Player & History Sidebar -->
     <aside class="right-sidebar fade-in-up" style="animation-delay: 0.1s;">
 
-      <!-- Player Card with Video Area (Compact) -->
+      <!-- Player Card (Compact Audio Only) -->
       <div class="player-card player-card--compact glass-card">
         <div class="player-header">
           <i data-lucide="music-2"></i>
           <span>Player</span>
-        </div>
-
-        <!-- Video/Thumbnail Area (Small) -->
-        <div class="player-video-area player-video-area--small" id="player-video-area">
-          <div class="video-placeholder" id="video-placeholder">
-            <i data-lucide="play-circle"></i>
-            <span>Selecione uma música</span>
-          </div>
-          <div id="yt-embed-container" class="yt-embed-container" style="display: none;"></div>
-          <div id="video-fallback" class="video-fallback" style="display: none;">
-            <img id="video-thumbnail" src="" alt="Thumbnail" class="video-thumbnail">
-            <a id="yt-external-link" href="#" target="_blank" rel="noopener" class="btn-watch-youtube">
-              <i data-lucide="external-link"></i>
-              Assistir no YouTube
-            </a>
-          </div>
         </div>
 
         <div class="player-info">
@@ -163,7 +144,7 @@
           <!-- Slide 1: Music History -->
           <div class="carousel-slide active" id="slide-history">
             <div class="slide-header">
-              <i data-lucide="history"></i>
+              <i data-lucide="clock"></i>
               <span>Histórico Recente</span>
             </div>
             <div class="history-list" id="history-preview">
@@ -231,43 +212,65 @@
   <!-- Login Modal -->
   <div id="modal-login" class="modal">
     <div class="modal__backdrop" data-close></div>
-    <div class="modal__content glass-card">
-      <header class="modal__header">
-        <h2>Entrar</h2>
-        <button class="close-btn" data-close><i data-lucide="x"></i></button>
-      </header>
-      <form class="login-form">
+    <div class="modal__content modal__content--auth glass-card">
+      <button class="close-btn close-btn--floating" data-close><i data-lucide="x"></i></button>
+
+      <!-- Auth Header with Icon -->
+      <div class="auth-header">
+        <div class="auth-icon">
+          <i data-lucide="log-in"></i>
+        </div>
+        <h2>Bem-vindo de volta</h2>
+        <p>Entre para continuar sua jornada de foco</p>
+      </div>
+
+      <form class="auth-form" id="login-form">
         <div class="form-group">
           <label>Email</label>
           <div class="input-icon">
             <i data-lucide="mail"></i>
-            <input type="email" class="glass-input" placeholder="seu@email.com">
+            <input type="email" class="glass-input" placeholder="seu@email.com" required>
           </div>
         </div>
         <div class="form-group">
           <label>Senha</label>
           <div class="input-icon">
             <i data-lucide="lock"></i>
-            <input type="password" class="glass-input" placeholder="••••••">
+            <input type="password" class="glass-input" placeholder="••••••" required>
           </div>
         </div>
-        <button type="submit" class="btn btn--primary">Entrar</button>
-        <p class="auth-switch">
-          Não tem conta? <a href="#" data-switch="register">Cadastre-se</a>
-        </p>
+        <button type="submit" class="btn btn--gradient">
+          <i data-lucide="arrow-right"></i>
+          Entrar
+        </button>
       </form>
+
+      <div class="auth-divider">
+        <span>ou</span>
+      </div>
+
+      <p class="auth-switch">
+        Não tem conta? <a href="#" data-switch="register">Criar conta</a>
+      </p>
     </div>
   </div>
 
   <!-- Register Modal -->
   <div id="modal-register" class="modal">
     <div class="modal__backdrop" data-close></div>
-    <div class="modal__content glass-card">
-      <header class="modal__header">
-        <h2>Criar Conta</h2>
-        <button class="close-btn" data-close><i data-lucide="x"></i></button>
-      </header>
-      <form class="register-form">
+    <div class="modal__content modal__content--auth glass-card">
+      <button class="close-btn close-btn--floating" data-close><i data-lucide="x"></i></button>
+
+      <!-- Auth Header with Icon -->
+      <div class="auth-header">
+        <div class="auth-icon auth-icon--register">
+          <i data-lucide="user-plus"></i>
+        </div>
+        <h2>Criar conta</h2>
+        <p>Comece sua jornada de produtividade</p>
+      </div>
+
+      <form class="auth-form" id="register-form">
         <div class="form-group">
           <label>Nome</label>
           <div class="input-icon">
@@ -286,41 +289,100 @@
           <label>Senha</label>
           <div class="input-icon">
             <i data-lucide="lock"></i>
-            <input type="password" class="glass-input" placeholder="••••••" required>
+            <input type="password" class="glass-input" placeholder="Mínimo 6 caracteres" required minlength="6">
           </div>
         </div>
-        <button type="submit" class="btn btn--primary">Cadastrar</button>
-        <p class="auth-switch">
-          Já tem conta? <a href="#" data-switch="login">Entrar</a>
-        </p>
+        <button type="submit" class="btn btn--gradient">
+          <i data-lucide="sparkles"></i>
+          Criar conta
+        </button>
       </form>
+
+      <div class="auth-divider">
+        <span>ou</span>
+      </div>
+
+      <p class="auth-switch">
+        Já tem conta? <a href="#" data-switch="login">Entrar</a>
+      </p>
     </div>
   </div>
 
   <!-- Timer Settings Modal -->
   <div id="modal-timer" class="modal">
     <div class="modal__backdrop" data-close></div>
-    <div class="modal__content glass-card">
-      <header class="modal__header">
-        <h2>Configurar Timer</h2>
-        <button class="close-btn" data-close><i data-lucide="x"></i></button>
-      </header>
-      <div class="timer-settings">
-        <div class="setting-group">
-          <label>Foco</label>
-          <select class="glass-input" id="focus-duration">
-            <option value="1500">25 min</option>
-            <option value="3000">50 min</option>
-          </select>
-        </div>
-        <div class="setting-group">
-          <label>Pausa</label>
-          <select class="glass-input" id="break-duration">
-            <option value="300">5 min</option>
-            <option value="600">10 min</option>
-          </select>
+    <div class="modal__content modal__content--timer glass-card">
+      <button class="close-btn close-btn--floating" data-close><i data-lucide="x"></i></button>
+
+      <!-- Current Time Display -->
+      <div class="timer-modal-clock">
+        <span id="modal-current-time">00:00</span>
+        <span class="timer-modal-date" id="modal-current-date">Segunda, 1 Jan</span>
+      </div>
+
+      <!-- Timer Presets -->
+      <div class="timer-presets">
+        <h3>Modo Pomodoro</h3>
+        <div class="preset-cards">
+          <button class="preset-card" data-focus="1500" data-break="300">
+            <div class="preset-icon">
+              <i data-lucide="zap"></i>
+            </div>
+            <div class="preset-info">
+              <span class="preset-name">Curto</span>
+              <span class="preset-time">25 + 5 min</span>
+            </div>
+          </button>
+          <button class="preset-card active" data-focus="3000" data-break="600">
+            <div class="preset-icon">
+              <i data-lucide="flame"></i>
+            </div>
+            <div class="preset-info">
+              <span class="preset-name">Longo</span>
+              <span class="preset-time">50 + 10 min</span>
+            </div>
+          </button>
+          <button class="preset-card" data-focus="5400" data-break="900">
+            <div class="preset-icon">
+              <i data-lucide="rocket"></i>
+            </div>
+            <div class="preset-info">
+              <span class="preset-name">Deep Work</span>
+              <span class="preset-time">90 + 15 min</span>
+            </div>
+          </button>
         </div>
       </div>
+
+      <!-- Custom Time -->
+      <div class="timer-custom">
+        <h4>Personalizado</h4>
+        <div class="custom-time-row">
+          <div class="custom-time-input">
+            <label>Foco</label>
+            <div class="time-spinner">
+              <button class="spinner-btn" data-action="decrease" data-target="focus"><i data-lucide="minus"></i></button>
+              <span id="custom-focus-display">25</span>
+              <button class="spinner-btn" data-action="increase" data-target="focus"><i data-lucide="plus"></i></button>
+            </div>
+            <span class="time-unit">min</span>
+          </div>
+          <div class="custom-time-input">
+            <label>Pausa</label>
+            <div class="time-spinner">
+              <button class="spinner-btn" data-action="decrease" data-target="break"><i data-lucide="minus"></i></button>
+              <span id="custom-break-display">5</span>
+              <button class="spinner-btn" data-action="increase" data-target="break"><i data-lucide="plus"></i></button>
+            </div>
+            <span class="time-unit">min</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn--primary btn--apply-timer">
+        <i data-lucide="check"></i>
+        Aplicar
+      </button>
     </div>
   </div>
 

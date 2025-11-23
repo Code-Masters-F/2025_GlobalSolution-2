@@ -1474,102 +1474,6 @@ textarea:focus-visible {
   padding-top: var(--spacing-xs);
 }
 
-/* ========================================
-   PLAYER VIDEO AREA
-   ======================================== */
-.player-video-area {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  max-height: 140px;
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  position: relative;
-  margin-bottom: var(--spacing-xs);
-}
-
-.player-video-area--small {
-  max-height: 120px;
-}
-
-.video-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-xs);
-  color: var(--text-tertiary);
-}
-
-.video-placeholder i {
-  width: 32px;
-  height: 32px;
-  opacity: 0.5;
-}
-
-.video-placeholder span {
-  font-size: 0.75rem;
-}
-
-.yt-embed-container {
-  width: 100%;
-  height: 100%;
-}
-
-.yt-embed-container iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-.video-fallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.video-thumbnail {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.btn-watch-youtube {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: rgba(255, 0, 0, 0.9);
-  color: white;
-  font-weight: 600;
-  font-size: 0.8rem;
-  border-radius: var(--radius-full);
-  text-decoration: none;
-  transition: all 0.2s;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-}
-
-.btn-watch-youtube:hover {
-  background: #ff0000;
-  transform: scale(1.05);
-  box-shadow: 0 6px 30px rgba(255, 0, 0, 0.4);
-}
-
-.btn-watch-youtube i {
-  width: 14px;
-  height: 14px;
-}
 
 /* ========================================
    VOLUME SLIDER STYLES
@@ -1776,26 +1680,78 @@ textarea:focus-visible {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 12px;
+  padding: 10px 12px;
   background: rgba(255, 255, 255, 0.03);
   border-radius: var(--radius-sm);
   transition: all 0.2s;
+  cursor: pointer;
+  border: 1px solid transparent;
 }
 
 .history-item:hover {
-  background: rgba(6, 182, 212, 0.1);
+  background: rgba(6, 182, 212, 0.15);
+  border-color: rgba(6, 182, 212, 0.3);
   transform: translateX(4px);
+}
+
+.history-item:hover .track-name {
+  color: var(--accent-primary, #06b6d4);
+}
+
+.history-item:active {
+  transform: translateX(2px) scale(0.98);
+}
+
+.history-play-icon {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: rgba(6, 182, 212, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary, #06b6d4);
+  margin-right: 10px;
+  transition: all 0.2s;
+}
+
+.history-item:hover .history-play-icon {
+  background: var(--accent-primary, #06b6d4);
+  color: #000;
+  transform: scale(1.1);
 }
 
 .history-info {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-width: 0;
 }
 
 .track-name {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s;
+}
+
+.track-artist {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-time {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  margin-left: 8px;
 }
 
 .track-artist {

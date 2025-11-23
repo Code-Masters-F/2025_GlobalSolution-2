@@ -45,11 +45,6 @@
     padding: var(--spacing-md);
   }
 
-  .player-video-area,
-  .player-video-area--small {
-    max-height: 140px;
-  }
-
   .carousel-card {
     min-height: 160px;
   }
@@ -66,11 +61,6 @@
     min-width: 280px;
   }
 
-  .player-video-area,
-  .player-video-area--small {
-    max-height: 100px;
-  }
-
   .carousel-card {
     min-height: 150px;
   }
@@ -80,10 +70,6 @@
 @media (min-width: 1400px) {
   .right-sidebar {
     width: 480px;
-  }
-
-  .player-video-area--small {
-    max-height: 140px;
   }
 
   .carousel-card {
