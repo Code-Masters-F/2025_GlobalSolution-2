@@ -5,8 +5,8 @@
 
 class MusicService {
     constructor() {
-        this.API_URL = 'http://localhost:8080';
-        this.USE_MOCK = true; // Set to false when backend is ready
+        this.API_URL = 'http://localhost:8080/api';
+        this.USE_MOCK = false; // Disabled mock to use real backend
     }
 
     /**
@@ -31,10 +31,9 @@ class MusicService {
     /**
      * Fetch music suggestions based on user goal
      * @param {string} goal - User's intention
-     * @param {number|null} lastMusicId - ID of last played music
      * @returns {Promise<Array>} List of suggestions
      */
-    async getSuggestions(goal, lastMusicId = null) {
+    async getSuggestions(goal, lastMusicId) {
         if (this.USE_MOCK) {
             return this.getMockSuggestions(goal);
         }
@@ -42,9 +41,10 @@ class MusicService {
         try {
             const payload = {
                 goal: goal,
-                lastMusicId: lastMusicId ? parseInt(lastMusicId) : null
+                lastMusicId: lastMusicId
             };
 
+            // Updated endpoint to match user screenshot
             const response = await fetch(`${this.API_URL}/chat/suggestions`, {
                 method: 'POST',
                 headers: {
@@ -64,23 +64,48 @@ class MusicService {
     // Mock Data Generators
     getMockPlaylist() {
         return Promise.resolve([
-            { title: "Lo-Fi Focus", description: "Beats para concentração", url: "assets/music/lofi.mp3", category: "Foco" },
-            { title: "Rain Sounds", description: "Sons de chuva relaxantes", url: "assets/music/rain.mp3", category: "Relax" },
-            { title: "Classical Flow", description: "Piano suave", url: "assets/music/classical.mp3", category: "Estudo" }
+            { title: "Lo-Fi Focus", description: "Beats para concentração", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", category: "Foco" },
+            { title: "Rain Sounds", description: "Sons de chuva relaxantes", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", category: "Relax" },
+            { title: "Classical Flow", description: "Piano suave", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", category: "Estudo" }
         ]);
     }
 
     getMockSuggestions(goal) {
         return new Promise(resolve => {
             setTimeout(() => {
-                const suggestions = [
-                    { id: 1, title: "Lo-Fi Study Beats", description: "Batidas calmas para foco intenso.", category: "Foco", url: "music1.mp3" },
-                    { id: 2, title: "Nature Sounds", description: "Sons de chuva e floresta.", category: "Relax", url: "music2.mp3" },
-                    { id: 3, title: "Deep Focus Alpha", description: "Ondas alpha para concentração.", category: "Foco", url: "music3.mp3" },
-                    { id: 4, title: "Piano Ambient", description: "Piano suave para leitura.", category: "Estudo", url: "music4.mp3" }
+                // Simulate filtering based on goal (simple mock logic)
+                const allSuggestions = [
+                    { id: 1, title: "Chuva Binaural", description: "Som de chuva com frequências binaurais para foco e estudo.", category: "Foco", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+                    { id: 2, title: "Sons de Tigela", description: "Vibrações sonoras de tigelas tibetanas para meditação profunda.", category: "Meditação", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+                    { id: 3, title: "Canto dos Pássaros", description: "Som ambiente de pássaros na floresta para relaxamento.", category: "Natureza", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+                    { id: 4, title: "Viagem de Trem", description: "Ambiente sonoro de uma viagem tranquila de trem.", category: "ASMR", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+                    { id: 5, title: "Dança do Dragão", description: "Música tradicional festiva chinesa.", category: "Cultura", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" }
                 ];
-                const random = suggestions[Math.floor(Math.random() * suggestions.length)];
-                resolve([random]);
+
+                const g = (goal || '').toLowerCase();
+                let filtered = allSuggestions;
+
+                // Filtra por categoria baseado no goal
+                if (g.includes('foco') || g.includes('estudar') || g.includes('concentrar') || g.includes('profundo')) {
+                    filtered = allSuggestions.filter(m => m.category === 'Foco');
+                } else if (g.includes('relaxar') || g.includes('meditar') || g.includes('calmo') || g.includes('paz')) {
+                    filtered = allSuggestions.filter(m => m.category === 'Meditação');
+                } else if (g.includes('natureza') || g.includes('floresta') || g.includes('pássaro')) {
+                    filtered = allSuggestions.filter(m => m.category === 'Natureza');
+                } else if (g.includes('dormir') || g.includes('sono') || g.includes('asmr') || g.includes('trem')) {
+                    filtered = allSuggestions.filter(m => m.category === 'ASMR');
+                } else if (g.includes('cultura') || g.includes('oriental') || g.includes('chinês')) {
+                    filtered = allSuggestions.filter(m => m.category === 'Cultura');
+                }
+
+                // Se não encontrou nada específico, embaralha e pega uma aleatória
+                if (filtered.length === 0) {
+                    filtered = allSuggestions;
+                }
+
+                // Embaralha e retorna apenas 1 música
+                filtered.sort(() => Math.random() - 0.5);
+                resolve([filtered[0]]);
             }, 500);
         });
     }

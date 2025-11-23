@@ -37,6 +37,14 @@
           e.preventDefault();
           this.close();
         }
+
+        // Switch entre modais de auth (login <-> register)
+        const switchBtn = e.target.closest('[data-switch]');
+        if (switchBtn) {
+          e.preventDefault();
+          const targetModal = switchBtn.getAttribute('data-switch');
+          this.switchModal(targetModal);
+        }
       });
 
       // ESC para fechar modal
@@ -103,6 +111,12 @@
         mainContainer.style.filter = '';
       }
 
+      // Remove blur do header também
+      const header = document.querySelector('.status-bar');
+      if (header) {
+        header.style.filter = '';
+      }
+
       // Retorna foco ao elemento anterior
       if (this.previousFocus) {
         this.previousFocus.focus();
@@ -113,6 +127,32 @@
       this.previousFocus = null;
 
       console.log('❌ Modal closed');
+    },
+
+    /**
+     * Troca entre modais (ex: login <-> register)
+     * @param {string} targetModalId - ID do modal destino
+     */
+    switchModal(targetModalId) {
+      // Fecha o modal atual sem animação
+      if (this.activeModal) {
+        this.activeModal.classList.remove('modal--active');
+      }
+
+      // Abre o novo modal mantendo o backdrop
+      const targetModal = document.getElementById(`modal-${targetModalId}`);
+      if (targetModal) {
+        this.activeModal = targetModal;
+        targetModal.classList.add('modal--active');
+        this.focusFirstElement(targetModal);
+
+        // Recria ícones Lucide no novo modal
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+
+        console.log(`🔄 Switched to modal: ${targetModalId}`);
+      }
     },
 
     /**

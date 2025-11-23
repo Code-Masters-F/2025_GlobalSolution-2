@@ -2,7 +2,12 @@ class PlayerController {
   constructor() {
     this.isPlaying = false;
     this.currentTrackIndex = 0;
-    this.tracks = []; // Will be populated by MusicService
+    this.tracks = [];
+    this.volume = 0.7;
+
+    // Audio Engine
+    this.audio = new Audio();
+    this.audio.volume = this.volume;
 
     // DOM Elements
     this.playBtn = document.getElementById('player-play');
@@ -11,13 +16,53 @@ class PlayerController {
     this.titleDisplay = document.getElementById('player-title');
     this.descDisplay = document.getElementById('player-description');
     this.volumeBar = document.querySelector('.volume-bar');
+    this.volumeContainer = document.querySelector('.player-volume');
 
     this.init();
   }
 
   async init() {
     this.setupEventListeners();
+    this.setupVolumeControl();
     await this.loadPlaylist();
+  }
+
+  setupVolumeControl() {
+    if (!this.volumeContainer) return;
+
+    const volumeSlider = document.createElement('input');
+    volumeSlider.type = 'range';
+    volumeSlider.min = '0';
+    volumeSlider.max = '100';
+    volumeSlider.value = this.volume * 100;
+    volumeSlider.className = 'volume-slider';
+
+    // Set initial gradient
+    this.updateVolumeSliderStyle(volumeSlider, this.volume * 100);
+
+    volumeSlider.addEventListener('input', (e) => {
+      const value = e.target.value / 100;
+      this.setVolume(value);
+      this.updateVolumeSliderStyle(volumeSlider, e.target.value);
+    });
+
+    if (this.volumeBar) {
+      this.volumeBar.replaceWith(volumeSlider);
+    } else {
+      this.volumeContainer.appendChild(volumeSlider);
+    }
+
+    this.volumeSlider = volumeSlider;
+  }
+
+  updateVolumeSliderStyle(slider, value) {
+    const percentage = value;
+    slider.style.background = `linear-gradient(to right, var(--accent-primary, #06b6d4) ${percentage}%, rgba(255,255,255,0.2) ${percentage}%)`;
+  }
+
+  setVolume(value) {
+    this.volume = Math.max(0, Math.min(1, value));
+    this.audio.volume = this.volume;
   }
 
   async loadPlaylist() {
@@ -28,10 +73,14 @@ class PlayerController {
           this.tracks = musics;
           this.updateDisplay();
           this.enableControls();
+          console.log(`Loaded ${musics.length} tracks`);
+        } else {
+          console.warn('No musics returned from service');
+          if (this.titleDisplay) this.titleDisplay.textContent = "Sem músicas";
         }
       } catch (error) {
         console.error('Failed to load playlist:', error);
-        this.titleDisplay.textContent = "Erro ao carregar";
+        if (this.titleDisplay) this.titleDisplay.textContent = "Erro ao carregar";
       }
     }
   }
@@ -40,6 +89,19 @@ class PlayerController {
     this.playBtn?.addEventListener('click', () => this.togglePlay());
     this.prevBtn?.addEventListener('click', () => this.prevTrack());
     this.nextBtn?.addEventListener('click', () => this.nextTrack());
+
+    this.audio.addEventListener('ended', () => this.nextTrack());
+    this.audio.addEventListener('play', () => {
+      this.isPlaying = true;
+      this.updateControls();
+    });
+    this.audio.addEventListener('pause', () => {
+      this.isPlaying = false;
+      this.updateControls();
+    });
+    this.audio.addEventListener('error', (e) => {
+      console.error('Audio error:', e);
+    });
   }
 
   enableControls() {
@@ -49,81 +111,99 @@ class PlayerController {
   }
 
   togglePlay() {
-    if (this.tracks.length === 0) return;
+    if (this.tracks.length === 0) {
+      console.warn('No tracks to play');
+      return;
+    }
 
-    this.isPlaying = !this.isPlaying;
+    if (!this.audio.src) {
+      this.playTrack(this.tracks[this.currentTrackIndex]);
+    } else if (this.isPlaying) {
+      this.audio.pause();
+    } else {
+      this.audio.play().catch(e => console.error('Play error:', e));
+    }
+
     this.updateControls();
+  }
 
-    // Update icon
-    if (this.playBtn) {
-      this.playBtn.innerHTML = this.isPlaying
-        ? '<i data-lucide="pause"></i>'
-        : '<i data-lucide="play"></i>';
-
-      if (window.lucide) lucide.createIcons();
+  playTrack(track) {
+    if (!track || !track.url) {
+      console.error('Invalid track:', track);
+      return;
     }
 
-    // Add to history if playing
-    if (this.isPlaying && window.HistorySystem) {
-      const currentTrack = this.tracks[this.currentTrackIndex];
-      window.HistorySystem.addToHistory(currentTrack);
-    }
+    console.log('Playing:', track.title);
+
+    this.audio.src = track.url;
+    this.audio.play().catch(e => console.error('Play error:', e));
+    this.isPlaying = true;
+
+    this.updateDisplay();
+    this.updateControls();
   }
 
   prevTrack() {
     if (this.tracks.length === 0) return;
     this.currentTrackIndex = (this.currentTrackIndex - 1 + this.tracks.length) % this.tracks.length;
-    this.updateDisplay();
-    if (this.isPlaying) {
-      // restart playing logic would go here
-    }
+    this.playTrack(this.tracks[this.currentTrackIndex]);
   }
 
   nextTrack() {
     if (this.tracks.length === 0) return;
     this.currentTrackIndex = (this.currentTrackIndex + 1) % this.tracks.length;
-    this.updateDisplay();
-    if (this.isPlaying) {
-      // restart playing logic would go here
-    }
+    this.playTrack(this.tracks[this.currentTrackIndex]);
   }
 
   updateDisplay() {
     if (this.tracks.length === 0) return;
 
     const track = this.tracks[this.currentTrackIndex];
-    if (this.titleDisplay) this.titleDisplay.textContent = track.title;
-    if (this.descDisplay) this.descDisplay.textContent = track.description;
+    if (this.titleDisplay) this.titleDisplay.textContent = track.title || 'Sem título';
+    if (this.descDisplay) this.descDisplay.textContent = track.description || track.category || '';
   }
 
   updateControls() {
-    // Visual feedback for playing state
     if (this.playBtn) {
       this.playBtn.classList.toggle('playing', this.isPlaying);
+      this.playBtn.innerHTML = this.isPlaying
+        ? '<i data-lucide="pause"></i>'
+        : '<i data-lucide="play"></i>';
+      if (window.lucide) lucide.createIcons();
     }
   }
 
-  loadTrack(track) {
-    // Check if track is already in the list
-    let index = this.tracks.findIndex(t => t.title === track.title);
+  stop() {
+    this.isPlaying = false;
+    this.audio.pause();
+    this.audio.currentTime = 0;
+    this.updateControls();
+  }
 
+  // Called by chat when clicking "Tocar Agora"
+  loadTrack(track) {
+    if (!track) {
+      console.error('loadTrack: no track provided');
+      return;
+    }
+
+    console.log('loadTrack called with:', track);
+
+    // Add to playlist if not exists
+    let index = this.tracks.findIndex(t => t.title === track.title);
     if (index === -1) {
-      // Add to tracks if not present
       this.tracks.push(track);
       index = this.tracks.length - 1;
     }
 
     this.currentTrackIndex = index;
-    this.updateDisplay();
     this.enableControls();
 
-    if (!this.isPlaying) {
-      this.togglePlay();
-    } else {
-      // If already playing, just ensure history is updated if needed
-      if (window.HistorySystem) {
-        window.HistorySystem.addToHistory(track);
-      }
+    this.playTrack(track);
+
+    // Add to history
+    if (window.HistorySystem) {
+      window.HistorySystem.addToHistory(track);
     }
   }
 }

@@ -17,20 +17,27 @@
     padding: var(--spacing-sm);
     gap: var(--spacing-sm);
     height: auto;
-    /* Allow height to grow */
     overflow-y: auto;
-    /* Enable scrolling */
   }
 
   .right-sidebar {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
+    order: 2;
+  }
+
+  .chat-container {
+    width: 100%;
+    max-width: none;
+    min-height: 50vh;
+    height: auto;
+    order: 1;
   }
 
   .chat-header h2 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .modal__content {
@@ -38,9 +45,34 @@
     padding: var(--spacing-md);
   }
 
-  .chat-container {
-    min-height: 75vh;
-    /* Increased height for better mobile experience */
-    height: auto;
+  .carousel-card {
+    min-height: 160px;
+  }
+}
+
+/* Tablet Layout (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .main-layout {
+    gap: var(--spacing-sm);
+  }
+
+  .right-sidebar {
+    width: 320px;
+    min-width: 280px;
+  }
+
+  .carousel-card {
+    min-height: 150px;
+  }
+}
+
+/* Large screens (> 1400px) */
+@media (min-width: 1400px) {
+  .right-sidebar {
+    width: 480px;
+  }
+
+  .carousel-card {
+    min-height: 200px;
   }
 }
