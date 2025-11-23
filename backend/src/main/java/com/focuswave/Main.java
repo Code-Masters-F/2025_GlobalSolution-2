@@ -21,8 +21,8 @@ public class Main {
         final HttpServer server = startServer();
 
         System.out.println("===========================================");
-        System.out.println("🚀 Servidor FocusWave iniciado!");
-        System.out.println("🌐 Endpoint base: " + BASE_URI + "api/");
+        System.out.println("Servidor FocusWave iniciado!");
+        System.out.println("Endpoint base: " + BASE_URI + "api/");
         System.out.println("Pressione ENTER para parar o servidor.");
         System.out.println("===========================================");
 
